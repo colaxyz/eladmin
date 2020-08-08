@@ -1,19 +1,6 @@
 #### 项目简介
 一个基于 Spring Boot 2.1.0 、 Spring Boot Jpa、 JWT、Spring Security、Redis、Vue的前后端分离的后台管理系统
 
-**开发文档：**  [https://el-admin.vip](https://el-admin.vip)
-
-**体验地址：**  [https://el-admin.xin](https://el-admin.xin)
-
-**账号密码：** `admin / 123456`
-
-#### 项目源码
-
-|     |   后端源码  |   前端源码  |
-|---  |--- | --- |
-|  github   |  https://github.com/elunez/eladmin   |  https://github.com/elunez/eladmin-web   |
-|  码云   |  https://gitee.com/elunez/eladmin   |  https://gitee.com/elunez/eladmin-web   |
-
 #### 主要特性
 - 使用最新技术栈，社区资源丰富。
 - 高效率开发，代码生成器可一键生成前后端代码
@@ -34,7 +21,7 @@
 - 岗位管理：配置各个部门的职位
 - 字典管理：可维护常用一些固定的数据，如：状态，性别等
 - 系统日志：记录用户操作日志与异常日志，方便开发人员定位拍错
-- SQL监控：采用druid 监控数据库访问性能，默认用户名admin，密码123456
+- SQL监控：采用druid 监控数据库访问性能
 - 定时任务：整合Quartz做定时任务，加入任务日志，任务运行情况一目了然
 - 代码生成：高灵活度生成前后端代码，减少大量重复的工作任务
 - 邮件工具：配合富文本，发送html格式的邮件
@@ -74,23 +61,3 @@
 - eladmin-tools 系统第三方工具模块
 - eladmin-generator 系统代码生成模块
 ```
-
-#### 特别鸣谢
-
-- 感谢 [JetBrains](https://www.jetbrains.com/) 提供的非商业开源软件开发授权
-
-- 感谢 [PanJiaChen](https://github.com/PanJiaChen/vue-element-admin) 大佬提供的前端模板
-
-- 感谢 [Moxun](https://github.com/moxun1639) 大佬提供的前端 Curd 通用组件
-
-- 感谢 [zhy6599](https://gitee.com/zhy6599) 大佬提供的后端运维管理相关功能
-
-- 感谢 [j.yao.SUSE](https://github.com/everhopingandwaiting) 大佬提供的匿名接口与Redis限流等功能
-
-- 感谢 [d15801543974](https://github.com/d15801543974) 大佬提供的基于注解的通用查询方式
-
-#### 项目捐赠
-项目的发展离不开你的支持，请作者喝杯咖啡吧☕  [Donate](https://el-admin.vip/donation/)
-
-#### 反馈交流
-- QQ交流群：891137268
