@@ -74,26 +74,6 @@
 - eladmin-tools 系统第三方工具模块
 - eladmin-generator 系统代码生成模块
 ```
-    
-#### 系统预览
-<table>
-    <tr>
-        <td><img src="https://img.el-admin.xin/20200605172248.png"/></td>
-        <td><img src="https://img.el-admin.xin/20200605172339.png"/></td>
-    </tr>
-    <tr>
-        <td><img src="https://img.el-admin.xin/20200605172432.png"/></td>
-        <td><img src="https://img.el-admin.xin/20200605172455.png"/></td>
-    </tr>
-    <tr>
-        <td><img src="https://img.el-admin.xin/20200605172536.png"/></td>
-        <td><img src="https://img.el-admin.xin/20200605172558.png"/></td>
-    </tr>
-    <tr>
-        <td><img src="https://img.el-admin.xin/20200605172645.png"/></td>
-        <td><img src="https://img.el-admin.xin/20200605172715.png"/></td>
-    </tr>
-</table>
 
 #### 特别鸣谢
 
