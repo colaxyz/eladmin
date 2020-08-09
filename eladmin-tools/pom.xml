@@ -14,8 +14,6 @@
 
     <properties>
         <mail.version>1.5.0-b01</mail.version>
-        <qiniu.version>[7.2.0, 7.2.99]</qiniu.version>
-        <alipay.version>4.9.153.ALL</alipay.version>
     </properties>
 
     <dependencies>
@@ -31,13 +29,6 @@
             <groupId>javax.mail</groupId>
             <artifactId>mail</artifactId>
             <version>${mail.version}</version>
-        </dependency>
-
-        <!--七牛云存储-->
-        <dependency>
-            <groupId>com.qiniu</groupId>
-            <artifactId>qiniu-java-sdk</artifactId>
-            <version>${qiniu.version}</version>
         </dependency>
 
     </dependencies>
