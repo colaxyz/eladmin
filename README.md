@@ -26,7 +26,6 @@
 - 代码生成：高灵活度生成前后端代码，减少大量重复的工作任务
 - 邮件工具：配合富文本，发送html格式的邮件
 - 免费图床：使用sm.ms图床，用作公共图片上传使用，该图床不怎么稳定，不太建议使用
-- 七牛云存储：可同步七牛云存储的数据到系统，无需登录七牛云直接操作云数据
 - 服务监控：监控服务器的负载情况
 - 运维管理：一键部署你的应用
 
@@ -39,7 +38,7 @@
 
 - `eladmin-logging` 为系统的日志模块，其他模块如果需要记录日志需要引入该模块
 
-- `eladmin-tools` 为第三方工具模块，包含：图床、邮件、云存储、本地存储
+- `eladmin-tools` 为第三方工具模块，包含：图床、邮件
 
 - `eladmin-generator` 为系统的代码生成模块，代码生成的模板在 system 模块中
 
@@ -49,7 +48,7 @@
 - eladmin-common 公共模块
     - annotation 为系统自定义注解
     - aspect 自定义注解的切面
-    - base 提供了Entity、DTO基类和mapstruct的通用mapper
+    - base 提供了Entity、DTO基类和mapstruct的通用mapper````
     - config 自定义权限实现、redis配置、swagger配置、Rsa配置等
     - exception 项目统一异常的处理
     - utils 系统通用工具类
