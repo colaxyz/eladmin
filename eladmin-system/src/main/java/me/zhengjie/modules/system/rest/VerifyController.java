@@ -41,14 +41,6 @@ public class VerifyController {
     private final VerifyService verificationCodeService;
     private final EmailService emailService;
 
-    @PostMapping(value = "/resetEmail")
-    @ApiOperation("重置邮箱，发送验证码")
-    public ResponseEntity<Object> resetEmail(@RequestParam String email){
-        EmailVo emailVo = verificationCodeService.sendEmail(email, CodeEnum.EMAIL_RESET_EMAIL_CODE.getKey());
-        emailService.send(emailVo,emailService.find());
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-
     @PostMapping(value = "/email/resetPass")
     @ApiOperation("重置密码，发送验证码")
     public ResponseEntity<Object> resetPass(@RequestParam String email){
