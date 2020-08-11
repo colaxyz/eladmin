@@ -161,7 +161,7 @@ public class UserController {
 
     @Log("修改邮箱")
     @ApiOperation("修改邮箱")
-    @PostMapping(value = "/updateEmail/{code}")
+    @PostMapping(value = "/updateEmail")
     public ResponseEntity<Object> updateEmail(@RequestBody User user) throws Exception {
         String password = RsaUtils.decryptByPrivateKey(RsaProperties.privateKey,user.getPassword());
         UserDto userDto = userService.findByName(SecurityUtils.getCurrentUsername());
