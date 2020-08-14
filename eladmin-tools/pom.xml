@@ -12,23 +12,12 @@
     <artifactId>eladmin-tools</artifactId>
     <name>工具模块</name>
 
-    <properties>
-        <mail.version>1.5.0-b01</mail.version>
-    </properties>
-
     <dependencies>
         <!-- 同时需要common模块和logging模块只需要引入logging模块即可 -->
         <dependency>
             <groupId>me.zhengjie</groupId>
             <artifactId>eladmin-logging</artifactId>
             <version>2.5</version>
-        </dependency>
-
-        <!--邮件依赖-->
-        <dependency>
-            <groupId>javax.mail</groupId>
-            <artifactId>mail</artifactId>
-            <version>${mail.version}</version>
         </dependency>
 
     </dependencies>
