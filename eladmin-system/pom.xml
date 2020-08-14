@@ -12,6 +12,10 @@
     <artifactId>eladmin-system</artifactId>
     <name>核心模块</name>
 
+    <properties>
+        <jjwt.version>0.11.1</jjwt.version>
+    </properties>
+
     <dependencies>
         <!-- 代码生成模块 -->
         <dependency>
