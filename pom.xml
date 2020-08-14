@@ -13,7 +13,6 @@
         <module>eladmin-common</module>
         <module>eladmin-logging</module>
         <module>eladmin-system</module>
-        <module>eladmin-generator</module>
     </modules>
 
     <name>EL-ADMIN 后台管理</name>
