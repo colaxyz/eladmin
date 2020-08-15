@@ -3,18 +3,17 @@ package me.zhengjie.modules.system.rest;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
-import me.zhengjie.annotation.Log;
 import me.zhengjie.exception.BadRequestException;
 import me.zhengjie.modules.system.domain.Job;
 import me.zhengjie.modules.system.service.JobService;
 import me.zhengjie.modules.system.service.dto.JobQueryCriteria;
-import me.zhengjie.utils.ThrowableUtil;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Set;
@@ -32,7 +31,6 @@ public class JobController {
     private final JobService jobService;
     private static final String ENTITY_NAME = "job";
 
-    @Log("导出岗位数据")
     @ApiOperation("导出岗位数据")
     @GetMapping(value = "/download")
     @PreAuthorize("@el.check('job:list')")
@@ -40,7 +38,6 @@ public class JobController {
         jobService.download(jobService.queryAll(criteria), response);
     }
 
-    @Log("查询岗位")
     @ApiOperation("查询岗位")
     @GetMapping
     @PreAuthorize("@el.check('job:list','user:list')")
@@ -48,7 +45,6 @@ public class JobController {
         return new ResponseEntity<>(jobService.queryAll(criteria, pageable),HttpStatus.OK);
     }
 
-    @Log("新增岗位")
     @ApiOperation("新增岗位")
     @PostMapping
     @PreAuthorize("@el.check('job:add')")
@@ -60,7 +56,6 @@ public class JobController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @Log("修改岗位")
     @ApiOperation("修改岗位")
     @PutMapping
     @PreAuthorize("@el.check('job:edit')")
@@ -69,7 +64,6 @@ public class JobController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @Log("删除岗位")
     @ApiOperation("删除岗位")
     @DeleteMapping
     @PreAuthorize("@el.check('job:del')")

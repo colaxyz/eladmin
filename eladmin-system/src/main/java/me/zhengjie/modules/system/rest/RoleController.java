@@ -4,9 +4,8 @@ import cn.hutool.core.lang.Dict;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
-import me.zhengjie.annotation.Log;
-import me.zhengjie.modules.system.domain.Role;
 import me.zhengjie.exception.BadRequestException;
+import me.zhengjie.modules.system.domain.Role;
 import me.zhengjie.modules.system.service.RoleService;
 import me.zhengjie.modules.system.service.dto.RoleDto;
 import me.zhengjie.modules.system.service.dto.RoleQueryCriteria;
@@ -18,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Collections;
@@ -46,7 +46,6 @@ public class RoleController {
         return new ResponseEntity<>(roleService.findById(id), HttpStatus.OK);
     }
 
-    @Log("导出角色数据")
     @ApiOperation("导出角色数据")
     @GetMapping(value = "/download")
     @PreAuthorize("@el.check('role:list')")
@@ -61,7 +60,6 @@ public class RoleController {
         return new ResponseEntity<>(roleService.queryAll(),HttpStatus.OK);
     }
 
-    @Log("查询角色")
     @ApiOperation("查询角色")
     @GetMapping
     @PreAuthorize("@el.check('roles:list')")
@@ -75,7 +73,6 @@ public class RoleController {
         return new ResponseEntity<>(Dict.create().set("level", getLevels(null)),HttpStatus.OK);
     }
 
-    @Log("新增角色")
     @ApiOperation("新增角色")
     @PostMapping
     @PreAuthorize("@el.check('roles:add')")
@@ -88,7 +85,6 @@ public class RoleController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @Log("修改角色")
     @ApiOperation("修改角色")
     @PutMapping
     @PreAuthorize("@el.check('roles:edit')")
@@ -98,7 +94,6 @@ public class RoleController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @Log("修改角色菜单")
     @ApiOperation("修改角色菜单")
     @PutMapping(value = "/menu")
     @PreAuthorize("@el.check('roles:edit')")
@@ -109,7 +104,6 @@ public class RoleController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @Log("删除角色")
     @ApiOperation("删除角色")
     @DeleteMapping
     @PreAuthorize("@el.check('roles:del')")
