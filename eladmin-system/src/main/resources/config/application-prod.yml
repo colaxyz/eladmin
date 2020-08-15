@@ -27,20 +27,9 @@ spring:
       # 检测连接是否有效
       validation-query: select 1
       # 配置监控统计
-      webStatFilter:
-        enabled: true
-      stat-view-servlet:
-        enabled: true
-        url-pattern: /druid/*
-        reset-enable: false
-        login-username: admin
-        login-password: 123456
       filter:
         stat:
           enabled: true
-          # 记录慢SQL
-          log-slow-sql: true
-          slow-sql-millis: 1000
           merge-sql: true
         wall:
           config:
