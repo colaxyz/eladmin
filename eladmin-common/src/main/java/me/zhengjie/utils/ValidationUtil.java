@@ -21,10 +21,4 @@ public class ValidationUtil{
         }
     }
 
-    /**
-     * 验证是否为邮箱
-     */
-    public static boolean isEmail(String email) {
-        return new EmailValidator().isValid(email, null);
-    }
 }
