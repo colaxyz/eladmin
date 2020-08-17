@@ -136,11 +136,6 @@
             <artifactId>druid-spring-boot-starter</artifactId>
             <version>${druid.version}</version>
         </dependency>
-        <dependency>
-            <groupId>org.lionsoul</groupId>
-            <artifactId>ip2region</artifactId>
-            <version>1.7.2</version>
-        </dependency>
         <!--lombok插件-->
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -195,13 +190,6 @@
             <groupId>com.github.whvcse</groupId>
             <artifactId>easy-captcha</artifactId>
             <version>1.6.2</version>
-        </dependency>
-
-        <!-- 解析客户端操作系统、浏览器信息 -->
-        <dependency>
-            <groupId>eu.bitwalker</groupId>
-            <artifactId>UserAgentUtils</artifactId>
-            <version>1.21</version>
         </dependency>
     </dependencies>
 

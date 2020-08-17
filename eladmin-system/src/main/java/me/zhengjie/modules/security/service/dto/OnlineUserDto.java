@@ -30,19 +30,9 @@ public class OnlineUserDto {
     private String dept;
 
     /**
-     * 浏览器
-     */
-    private String browser;
-
-    /**
      * IP
      */
     private String ip;
-
-    /**
-     * 地址
-     */
-    private String address;
 
     /**
      * token
