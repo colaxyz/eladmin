@@ -2,7 +2,6 @@ package me.zhengjie.utils;
 
 import cn.hutool.core.util.ObjectUtil;
 import me.zhengjie.exception.BadRequestException;
-import org.hibernate.validator.internal.constraintvalidators.hv.EmailValidator;
 
 /**
  * 验证工具
