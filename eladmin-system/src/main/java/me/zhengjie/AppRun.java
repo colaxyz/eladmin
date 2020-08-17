@@ -1,6 +1,5 @@
 package me.zhengjie;
 
-import io.swagger.annotations.Api;
 import me.zhengjie.annotation.rest.AnonymousGetMapping;
 import me.zhengjie.utils.SpringContextHolder;
 import org.springframework.boot.SpringApplication;
@@ -21,7 +20,6 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @EnableAsync
 @RestController
-@Api(hidden = true)
 @SpringBootApplication
 @EnableTransactionManagement
 @EnableJpaAuditing(auditorAwareRef = "auditorAware")
