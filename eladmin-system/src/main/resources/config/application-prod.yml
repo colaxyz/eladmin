@@ -80,10 +80,6 @@ jwt:
 ip:
   local-parsing: false
 
-#是否允许生成代码，生产环境设置为false
-generator:
-  enabled: false
-
 #如果生产环境要开启swagger，需要配置请求地址
 #springfox:
 #  documentation:
