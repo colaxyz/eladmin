@@ -4,14 +4,16 @@ import lombok.extern.slf4j.Slf4j;
 import me.zhengjie.modules.security.config.bean.SecurityProperties;
 import me.zhengjie.modules.security.service.dto.JwtUserDto;
 import me.zhengjie.modules.security.service.dto.OnlineUserDto;
-import me.zhengjie.utils.*;
-import org.springframework.data.domain.Pageable;
+import me.zhengjie.utils.EncryptUtils;
+import me.zhengjie.utils.RedisUtils;
+import me.zhengjie.utils.StringUtils;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.util.*;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
 
 /**
  * @author Zheng Jie
@@ -33,32 +35,16 @@ public class OnlineUserService {
      * 保存在线用户信息
      * @param jwtUserDto /
      * @param token /
-     * @param request /
      */
-    public void save(JwtUserDto jwtUserDto, String token, HttpServletRequest request){
+    public void save(JwtUserDto jwtUserDto, String token){
         String dept = jwtUserDto.getUser().getDept().getName();
-        String ip = StringUtils.getIp(request);
         OnlineUserDto onlineUserDto = null;
         try {
-            onlineUserDto = new OnlineUserDto(jwtUserDto.getUsername(), jwtUserDto.getUser().getNickName(), dept , ip, EncryptUtils.desEncrypt(token), new Date());
+            onlineUserDto = new OnlineUserDto(jwtUserDto.getUsername(), jwtUserDto.getUser().getNickName(), dept , EncryptUtils.desEncrypt(token), new Date());
         } catch (Exception e) {
             log.error(e.getMessage(),e);
         }
         redisUtils.set(properties.getOnlineKey() + token, onlineUserDto, properties.getTokenValidityInSeconds()/1000);
-    }
-
-    /**
-     * 查询全部数据
-     * @param filter /
-     * @param pageable /
-     * @return /
-     */
-    public Map<String,Object> getAll(String filter, Pageable pageable){
-        List<OnlineUserDto> onlineUserDtos = getAll(filter);
-        return PageUtil.toPage(
-                PageUtil.toPage(pageable.getPageNumber(),pageable.getPageSize(), onlineUserDtos),
-                onlineUserDtos.size()
-        );
     }
 
     /**
@@ -100,25 +86,6 @@ public class OnlineUserService {
     public void logout(String token) {
         String key = properties.getOnlineKey() + token;
         redisUtils.del(key);
-    }
-
-    /**
-     * 导出
-     * @param all /
-     * @param response /
-     * @throws IOException /
-     */
-    public void download(List<OnlineUserDto> all, HttpServletResponse response) throws IOException {
-        List<Map<String, Object>> list = new ArrayList<>();
-        for (OnlineUserDto user : all) {
-            Map<String,Object> map = new LinkedHashMap<>();
-            map.put("用户名", user.getUserName());
-            map.put("部门", user.getDept());
-            map.put("登录IP", user.getIp());
-            map.put("登录日期", user.getLoginTime());
-            list.add(map);
-        }
-        FileUtil.downloadExcel(list, response);
     }
 
     /**

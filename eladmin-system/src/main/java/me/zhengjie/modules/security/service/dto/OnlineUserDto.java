@@ -30,11 +30,6 @@ public class OnlineUserDto {
     private String dept;
 
     /**
-     * IP
-     */
-    private String ip;
-
-    /**
      * token
      */
     private String key;
