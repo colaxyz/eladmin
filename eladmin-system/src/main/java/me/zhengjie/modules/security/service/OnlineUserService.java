@@ -37,10 +37,9 @@ public class OnlineUserService {
      * @param token /
      */
     public void save(JwtUserDto jwtUserDto, String token){
-        String dept = jwtUserDto.getUser().getDept().getName();
         OnlineUserDto onlineUserDto = null;
         try {
-            onlineUserDto = new OnlineUserDto(jwtUserDto.getUsername(), jwtUserDto.getUser().getNickName(), dept , EncryptUtils.desEncrypt(token), new Date());
+            onlineUserDto = new OnlineUserDto(jwtUserDto.getUsername() , EncryptUtils.desEncrypt(token), new Date());
         } catch (Exception e) {
             log.error(e.getMessage(),e);
         }
