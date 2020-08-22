@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 /**
  * @author: liaojinlong
  * @date: 2020/6/11 18:01
- * @apiNote: 用于清理 用户登录信息缓存，为防止Spring循环依赖与安全考虑 ，单独构成工具类
+ * @apiNote: 用于清理 用户登录信息缓存
  */
 @Component
 public class UserCacheClean {
@@ -23,11 +23,4 @@ public class UserCacheClean {
         }
     }
 
-    /**
-     * 清理所有用户的缓存信息<br>
-     * ,如发生角色授权信息变化，可以简便的全部失效缓存
-     */
-    public void cleanAll() {
-        UserDetailsServiceImpl.userDtoCache.clear();
-    }
 }
