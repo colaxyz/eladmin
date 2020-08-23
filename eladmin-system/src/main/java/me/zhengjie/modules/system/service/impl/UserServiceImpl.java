@@ -2,15 +2,13 @@ package me.zhengjie.modules.system.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import me.zhengjie.config.FileProperties;
+import me.zhengjie.exception.EntityExistException;
+import me.zhengjie.exception.EntityNotFoundException;
 import me.zhengjie.modules.security.service.OnlineUserService;
 import me.zhengjie.modules.security.service.UserCacheClean;
 import me.zhengjie.modules.system.domain.User;
-import me.zhengjie.exception.EntityExistException;
-import me.zhengjie.exception.EntityNotFoundException;
 import me.zhengjie.modules.system.repository.UserRepository;
 import me.zhengjie.modules.system.service.UserService;
-import me.zhengjie.modules.system.service.dto.JobSmallDto;
-import me.zhengjie.modules.system.service.dto.RoleSmallDto;
 import me.zhengjie.modules.system.service.dto.UserDto;
 import me.zhengjie.modules.system.service.dto.UserQueryCriteria;
 import me.zhengjie.modules.system.service.mapstruct.UserMapper;
@@ -23,17 +21,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.constraints.NotBlank;
 import java.io.File;
-import java.io.IOException;
 import java.util.*;
-import java.util.stream.Collectors;
 
-/**
- * @author Zheng Jie
- * @date 2018-11-23
- */
 @Service
 @RequiredArgsConstructor
 @CacheConfig(cacheNames = "user")
@@ -190,26 +181,6 @@ public class UserServiceImpl implements UserService {
         userRepository.updateEmail(username, email);
         redisUtils.del(CacheKey.USER_NAME + username);
         flushCache(username);
-    }
-
-    @Override
-    public void download(List<UserDto> queryAll, HttpServletResponse response) throws IOException {
-        List<Map<String, Object>> list = new ArrayList<>();
-        for (UserDto userDTO : queryAll) {
-            List<String> roles = userDTO.getRoles().stream().map(RoleSmallDto::getName).collect(Collectors.toList());
-            Map<String, Object> map = new LinkedHashMap<>();
-            map.put("用户名", userDTO.getUsername());
-            map.put("角色", roles);
-            map.put("部门", userDTO.getDept().getName());
-            map.put("岗位", userDTO.getJobs().stream().map(JobSmallDto::getName).collect(Collectors.toList()));
-            map.put("邮箱", userDTO.getEmail());
-            map.put("状态", userDTO.getEnabled() ? "启用" : "禁用");
-            map.put("手机号码", userDTO.getPhone());
-            map.put("修改密码的时间", userDTO.getPwdResetTime());
-            map.put("创建日期", userDTO.getCreateTime());
-            list.add(map);
-        }
-        FileUtil.downloadExcel(list, response);
     }
 
     /**

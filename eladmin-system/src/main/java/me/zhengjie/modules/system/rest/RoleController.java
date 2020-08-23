@@ -18,17 +18,11 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-/**
- * @author Zheng Jie
- * @date 2018-12-03
- */
 @RestController
 @RequiredArgsConstructor
 @Api(tags = "系统：角色管理")
@@ -44,13 +38,6 @@ public class RoleController {
     @PreAuthorize("@el.check('roles:list')")
     public ResponseEntity<Object> query(@PathVariable Long id){
         return new ResponseEntity<>(roleService.findById(id), HttpStatus.OK);
-    }
-
-    @ApiOperation("导出角色数据")
-    @GetMapping(value = "/download")
-    @PreAuthorize("@el.check('role:list')")
-    public void download(HttpServletResponse response, RoleQueryCriteria criteria) throws IOException {
-        roleService.download(roleService.queryAll(criteria), response);
     }
 
     @ApiOperation("返回全部的角色")

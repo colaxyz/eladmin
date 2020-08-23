@@ -18,13 +18,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
 import java.util.*;
-
-/**
- * @author Zheng Jie
- * @date 2018-12-03
- */
 
 @RestController
 @RequiredArgsConstructor
@@ -35,13 +29,6 @@ public class MenuController {
     private final MenuService menuService;
     private final MenuMapper menuMapper;
     private static final String ENTITY_NAME = "menu";
-
-    @ApiOperation("导出菜单数据")
-    @GetMapping(value = "/download")
-    @PreAuthorize("@el.check('menu:list')")
-    public void download(HttpServletResponse response, MenuQueryCriteria criteria) throws Exception {
-        menuService.download(menuService.queryAll(criteria, false), response);
-    }
 
     @GetMapping(value = "/build")
     @ApiOperation("获取前端所需菜单")

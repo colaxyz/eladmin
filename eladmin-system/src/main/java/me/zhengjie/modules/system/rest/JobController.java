@@ -14,14 +14,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.util.Set;
 
-/**
-* @author Zheng Jie
-* @date 2019-03-29
-*/
 @RestController
 @RequiredArgsConstructor
 @Api(tags = "系统：岗位管理")
@@ -30,13 +24,6 @@ public class JobController {
 
     private final JobService jobService;
     private static final String ENTITY_NAME = "job";
-
-    @ApiOperation("导出岗位数据")
-    @GetMapping(value = "/download")
-    @PreAuthorize("@el.check('job:list')")
-    public void download(HttpServletResponse response, JobQueryCriteria criteria) throws IOException {
-        jobService.download(jobService.queryAll(criteria), response);
-    }
 
     @ApiOperation("查询岗位")
     @GetMapping

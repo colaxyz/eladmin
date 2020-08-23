@@ -16,13 +16,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
 import java.util.*;
 
-/**
-* @author Zheng Jie
-* @date 2019-03-25
-*/
 @RestController
 @RequiredArgsConstructor
 @Api(tags = "系统：部门管理")
@@ -31,13 +26,6 @@ public class DeptController {
 
     private final DeptService deptService;
     private static final String ENTITY_NAME = "dept";
-
-    @ApiOperation("导出部门数据")
-    @GetMapping(value = "/download")
-    @PreAuthorize("@el.check('dept:list')")
-    public void download(HttpServletResponse response, DeptQueryCriteria criteria) throws Exception {
-        deptService.download(deptService.queryAll(criteria, false), response);
-    }
 
     @ApiOperation("查询部门")
     @GetMapping

@@ -6,22 +6,21 @@ import lombok.RequiredArgsConstructor;
 import me.zhengjie.exception.BadRequestException;
 import me.zhengjie.modules.system.domain.Dept;
 import me.zhengjie.modules.system.domain.User;
+import me.zhengjie.modules.system.repository.DeptRepository;
 import me.zhengjie.modules.system.repository.RoleRepository;
 import me.zhengjie.modules.system.repository.UserRepository;
+import me.zhengjie.modules.system.service.DeptService;
 import me.zhengjie.modules.system.service.dto.DeptDto;
 import me.zhengjie.modules.system.service.dto.DeptQueryCriteria;
-import me.zhengjie.utils.*;
-import me.zhengjie.modules.system.repository.DeptRepository;
-import me.zhengjie.modules.system.service.DeptService;
 import me.zhengjie.modules.system.service.mapstruct.DeptMapper;
+import me.zhengjie.utils.*;
 import me.zhengjie.utils.enums.DataScopeEnum;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
+
 import java.lang.reflect.Field;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -131,19 +130,6 @@ public class DeptServiceImpl implements DeptService {
             deptRepository.deleteById(deptDto.getId());
             updateSubCnt(deptDto.getPid());
         }
-    }
-
-    @Override
-    public void download(List<DeptDto> deptDtos, HttpServletResponse response) throws IOException {
-        List<Map<String, Object>> list = new ArrayList<>();
-        for (DeptDto deptDTO : deptDtos) {
-            Map<String,Object> map = new LinkedHashMap<>();
-            map.put("部门名称", deptDTO.getName());
-            map.put("部门状态", deptDTO.getEnabled() ? "启用" : "停用");
-            map.put("创建日期", deptDTO.getCreateTime());
-            list.add(map);
-        }
-        FileUtil.downloadExcel(list, response);
     }
 
     @Override

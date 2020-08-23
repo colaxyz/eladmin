@@ -3,10 +3,10 @@ package me.zhengjie.modules.system.service.impl;
 import cn.hutool.core.collection.CollectionUtil;
 import lombok.RequiredArgsConstructor;
 import me.zhengjie.exception.BadRequestException;
+import me.zhengjie.exception.EntityExistException;
 import me.zhengjie.modules.security.service.UserCacheClean;
 import me.zhengjie.modules.system.domain.Menu;
 import me.zhengjie.modules.system.domain.Role;
-import me.zhengjie.exception.EntityExistException;
 import me.zhengjie.modules.system.domain.User;
 import me.zhengjie.modules.system.repository.RoleRepository;
 import me.zhengjie.modules.system.repository.UserRepository;
@@ -28,15 +28,9 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
-/**
- * @author Zheng Jie
- * @date 2018-12-03
- */
 @Service
 @RequiredArgsConstructor
 @CacheConfig(cacheNames = "role")
@@ -162,20 +156,6 @@ public class RoleServiceImpl implements RoleService {
                 .map(Menu::getPermission).collect(Collectors.toSet());
         return permissions.stream().map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList());
-    }
-
-    @Override
-    public void download(List<RoleDto> roles, HttpServletResponse response) throws IOException {
-        List<Map<String, Object>> list = new ArrayList<>();
-        for (RoleDto role : roles) {
-            Map<String, Object> map = new LinkedHashMap<>();
-            map.put("角色名称", role.getName());
-            map.put("角色级别", role.getLevel());
-            map.put("描述", role.getDescription());
-            map.put("创建日期", role.getCreateTime());
-            list.add(map);
-        }
-        FileUtil.downloadExcel(list, response);
     }
 
     @Override

@@ -29,17 +29,11 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-/**
- * @author Zheng Jie
- * @date 2018-11-23
- */
 @Api(tags = "系统：用户管理")
 @RestController
 @RequestMapping("/api/users")
@@ -51,13 +45,6 @@ public class UserController {
     private final DataService dataService;
     private final DeptService deptService;
     private final RoleService roleService;
-
-    @ApiOperation("导出用户数据")
-    @GetMapping(value = "/download")
-    @PreAuthorize("@el.check('user:list')")
-    public void download(HttpServletResponse response, UserQueryCriteria criteria) throws IOException {
-        userService.download(userService.queryAll(criteria), response);
-    }
 
     @ApiOperation("查询用户")
     @GetMapping

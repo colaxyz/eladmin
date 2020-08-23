@@ -7,15 +7,10 @@ import me.zhengjie.modules.system.service.dto.RoleSmallDto;
 import me.zhengjie.modules.system.service.dto.UserDto;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.GrantedAuthority;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
+
 import java.util.List;
 import java.util.Set;
 
-/**
- * @author Zheng Jie
- * @date 2018-12-03
- */
 public interface RoleService {
 
     /**
@@ -90,14 +85,6 @@ public interface RoleService {
      * @return /
      */
     List<RoleDto> queryAll(RoleQueryCriteria criteria);
-
-    /**
-     * 导出数据
-     * @param queryAll 待导出的数据
-     * @param response /
-     * @throws IOException /
-     */
-    void download(List<RoleDto> queryAll, HttpServletResponse response) throws IOException;
 
     /**
      * 获取用户权限信息

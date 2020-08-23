@@ -3,15 +3,10 @@ package me.zhengjie.modules.system.service;
 import me.zhengjie.modules.system.domain.Dept;
 import me.zhengjie.modules.system.service.dto.DeptDto;
 import me.zhengjie.modules.system.service.dto.DeptQueryCriteria;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
+
 import java.util.List;
 import java.util.Set;
 
-/**
-* @author Zheng Jie
-* @date 2019-03-25
-*/
 public interface DeptService {
 
     /**
@@ -62,14 +57,6 @@ public interface DeptService {
      * @return /
      */
     Set<Dept> findByRoleId(Long id);
-
-    /**
-     * 导出数据
-     * @param queryAll 待导出的数据
-     * @param response /
-     * @throws IOException /
-     */
-    void download(List<DeptDto> queryAll, HttpServletResponse response) throws IOException;
 
     /**
      * 获取待删除的部门

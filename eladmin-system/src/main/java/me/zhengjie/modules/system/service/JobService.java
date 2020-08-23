@@ -4,16 +4,11 @@ import me.zhengjie.modules.system.domain.Job;
 import me.zhengjie.modules.system.service.dto.JobDto;
 import me.zhengjie.modules.system.service.dto.JobQueryCriteria;
 import org.springframework.data.domain.Pageable;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
+
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-/**
-* @author Zheng Jie
-* @date 2019-03-29
-*/
 public interface JobService {
 
     /**
@@ -56,14 +51,6 @@ public interface JobService {
      * @return /
      */
     List<JobDto> queryAll(JobQueryCriteria criteria);
-
-    /**
-     * 导出数据
-     * @param queryAll 待导出的数据
-     * @param response /
-     * @throws IOException /
-     */
-    void download(List<JobDto> queryAll, HttpServletResponse response) throws IOException;
 
     /**
      * 验证是否被用户关联

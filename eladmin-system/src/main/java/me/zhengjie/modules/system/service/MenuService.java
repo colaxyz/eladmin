@@ -3,16 +3,10 @@ package me.zhengjie.modules.system.service;
 import me.zhengjie.modules.system.domain.Menu;
 import me.zhengjie.modules.system.service.dto.MenuDto;
 import me.zhengjie.modules.system.service.dto.MenuQueryCriteria;
-import me.zhengjie.modules.system.service.dto.RoleSmallDto;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
+
 import java.util.List;
 import java.util.Set;
 
-/**
- * @author Zheng Jie
- * @date 2018-12-17
- */
 public interface MenuService {
 
     /**
@@ -77,14 +71,6 @@ public interface MenuService {
      * @param menuSet /
      */
     void delete(Set<Menu> menuSet);
-
-    /**
-     * 导出
-     * @param queryAll 待导出的数据
-     * @param response /
-     * @throws IOException /
-     */
-    void download(List<MenuDto> queryAll, HttpServletResponse response) throws IOException;
 
     /**
      * 懒加载菜单数据

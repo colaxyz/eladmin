@@ -24,4 +24,3 @@ public interface CallBack {
         return Thread.currentThread().getId() + ":" + this.getClass().getName();
     }
 }
-
