@@ -8,10 +8,6 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 import java.util.Set;
 
-/**
-* @author Zheng Jie
-* @date 2019-03-25
-*/
 public interface DeptRepository extends JpaRepository<Dept, Long>, JpaSpecificationExecutor<Dept> {
 
     /**

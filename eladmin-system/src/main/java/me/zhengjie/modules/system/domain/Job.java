@@ -12,10 +12,6 @@ import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Objects;
 
-/**
-* @author Zheng Jie
-* @date 2019-03-29
-*/
 @Entity
 @Getter
 @Setter

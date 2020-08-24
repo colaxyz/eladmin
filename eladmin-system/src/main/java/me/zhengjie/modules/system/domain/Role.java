@@ -15,11 +15,6 @@ import java.sql.Timestamp;
 import java.util.Objects;
 import java.util.Set;
 
-/**
- * 角色
- * @author Zheng Jie
- * @date 2018-11-22
- */
 @Getter
 @Setter
 @Entity
