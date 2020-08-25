@@ -1,6 +1,5 @@
 package me.zhengjie.modules.system.rest;
 
-import cn.hutool.core.collection.CollectionUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -8,14 +7,11 @@ import me.zhengjie.config.RsaProperties;
 import me.zhengjie.exception.BadRequestException;
 import me.zhengjie.modules.system.domain.User;
 import me.zhengjie.modules.system.domain.vo.UserPassVo;
-import me.zhengjie.modules.system.service.DataService;
-import me.zhengjie.modules.system.service.DeptService;
 import me.zhengjie.modules.system.service.RoleService;
 import me.zhengjie.modules.system.service.UserService;
 import me.zhengjie.modules.system.service.dto.RoleSmallDto;
 import me.zhengjie.modules.system.service.dto.UserDto;
 import me.zhengjie.modules.system.service.dto.UserQueryCriteria;
-import me.zhengjie.utils.PageUtil;
 import me.zhengjie.utils.RsaUtils;
 import me.zhengjie.utils.SecurityUtils;
 import org.springframework.data.domain.Pageable;
@@ -23,14 +19,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.util.CollectionUtils;
-import org.springframework.util.ObjectUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Collections;
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -42,8 +35,6 @@ public class UserController {
 
     private final PasswordEncoder passwordEncoder;
     private final UserService userService;
-    private final DataService dataService;
-    private final DeptService deptService;
     private final RoleService roleService;
 
     @ApiOperation("查询用户")
