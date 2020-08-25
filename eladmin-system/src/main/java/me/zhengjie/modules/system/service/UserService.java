@@ -74,13 +74,6 @@ public interface UserService {
     Object queryAll(UserQueryCriteria criteria, Pageable pageable);
 
     /**
-     * 查询全部不分页
-     * @param criteria 条件
-     * @return /
-     */
-    List<UserDto> queryAll(UserQueryCriteria criteria);
-
-    /**
      * 用户自助修改资料
      * @param resources /
      */
