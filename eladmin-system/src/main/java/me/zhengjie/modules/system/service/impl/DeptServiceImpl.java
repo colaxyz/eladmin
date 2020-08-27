@@ -13,8 +13,9 @@ import me.zhengjie.modules.system.service.DeptService;
 import me.zhengjie.modules.system.service.dto.DeptDto;
 import me.zhengjie.modules.system.service.dto.DeptQueryCriteria;
 import me.zhengjie.modules.system.service.mapstruct.DeptMapper;
-import me.zhengjie.utils.*;
-import me.zhengjie.utils.enums.DataScopeEnum;
+import me.zhengjie.utils.QueryHelp;
+import me.zhengjie.utils.RedisUtils;
+import me.zhengjie.utils.ValidationUtil;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Sort;
@@ -43,11 +44,8 @@ public class DeptServiceImpl implements DeptService {
     @Override
     public List<DeptDto> queryAll(DeptQueryCriteria criteria, Boolean isQuery) throws Exception {
         Sort sort = new Sort(Sort.Direction.ASC, "deptSort");
-        String dataScopeType = SecurityUtils.getDataScopeType();
         if (isQuery) {
-            if(dataScopeType.equals(DataScopeEnum.ALL.getValue())){
-                criteria.setPidIsNull(true);
-            }
+            criteria.setPidIsNull(true);
             List<Field> fields = QueryHelp.getAllFields(criteria.getClass(), new ArrayList<>());
             List<String> fieldNames = new ArrayList<String>(){{ add("pidIsNull");add("enabled");}};
             for (Field field : fields) {
@@ -64,10 +62,6 @@ public class DeptServiceImpl implements DeptService {
             }
         }
         List<DeptDto> list = deptMapper.toDto(deptRepository.findAll((root, criteriaQuery, criteriaBuilder) -> QueryHelp.getPredicate(root,criteria,criteriaBuilder),sort));
-        // 如果为空，就代表为自定义权限或者本级权限，就需要去重，不理解可以注释掉，看查询结果
-        if(StringUtils.isBlank(dataScopeType)){
-            return deduplication(list);
-        }
         return list;
     }
 

@@ -5,7 +5,6 @@ import me.zhengjie.exception.BadRequestException;
 import me.zhengjie.exception.EntityNotFoundException;
 import me.zhengjie.modules.security.config.bean.LoginProperties;
 import me.zhengjie.modules.security.service.dto.JwtUserDto;
-import me.zhengjie.modules.system.service.DataService;
 import me.zhengjie.modules.system.service.RoleService;
 import me.zhengjie.modules.system.service.UserService;
 import me.zhengjie.modules.system.service.dto.UserDto;
@@ -25,7 +24,6 @@ import java.util.concurrent.ConcurrentHashMap;
 public class UserDetailsServiceImpl implements UserDetailsService {
     private final UserService userService;
     private final RoleService roleService;
-    private final DataService dataService;
     private final LoginProperties loginProperties;
     public void setEnableCache(boolean enableCache) {
         this.loginProperties.setCacheEnable(enableCache);
@@ -62,7 +60,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 }
                 jwtUserDto = new JwtUserDto(
                         user,
-                        dataService.getDeptIds(user),
                         roleService.mapToGrantedAuthorities(user)
                 );
                 userDtoCache.put(username, jwtUserDto);

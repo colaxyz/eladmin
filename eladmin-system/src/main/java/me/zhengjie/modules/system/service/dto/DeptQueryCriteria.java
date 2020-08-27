@@ -1,13 +1,12 @@
 package me.zhengjie.modules.system.service.dto;
 
 import lombok.Data;
-import me.zhengjie.annotation.DataPermission;
 import me.zhengjie.annotation.Query;
+
 import java.sql.Timestamp;
 import java.util.List;
 
 @Data
-@DataPermission(fieldName = "id")
 public class DeptQueryCriteria{
 
     @Query(type = Query.Type.INNER_LIKE)

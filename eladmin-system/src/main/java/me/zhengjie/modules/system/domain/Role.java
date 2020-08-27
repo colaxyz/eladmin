@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 import me.zhengjie.base.BaseEntity;
-import me.zhengjie.utils.enums.DataScopeEnum;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -43,8 +42,6 @@ public class Role extends BaseEntity implements Serializable {
 
     @NotBlank
     private String name;
-
-    private String dataScope = DataScopeEnum.THIS_LEVEL.getValue();
 
     @Column(name = "level")
     private Integer level = 3;
