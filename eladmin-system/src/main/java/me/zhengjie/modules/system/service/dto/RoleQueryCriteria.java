@@ -6,10 +6,6 @@ import me.zhengjie.annotation.Query;
 import java.sql.Timestamp;
 import java.util.List;
 
-/**
- * @author Zheng Jie
- * 公共查询类
- */
 @Data
 public class RoleQueryCriteria {
 

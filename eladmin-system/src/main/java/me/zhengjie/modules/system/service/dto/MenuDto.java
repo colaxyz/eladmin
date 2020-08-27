@@ -7,10 +7,6 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 
-/**
- * @author Zheng Jie
- * @date 2018-12-17
- */
 @Getter
 @Setter
 public class MenuDto extends BaseDTO implements Serializable {

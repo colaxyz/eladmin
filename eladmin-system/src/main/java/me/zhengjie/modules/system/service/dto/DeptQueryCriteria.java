@@ -6,10 +6,6 @@ import me.zhengjie.annotation.Query;
 import java.sql.Timestamp;
 import java.util.List;
 
-/**
-* @author Zheng Jie
-* @date 2019-03-25
-*/
 @Data
 @DataPermission(fieldName = "id")
 public class DeptQueryCriteria{
