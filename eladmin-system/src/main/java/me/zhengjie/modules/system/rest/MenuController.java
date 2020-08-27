@@ -1,8 +1,6 @@
 package me.zhengjie.modules.system.rest;
 
 import cn.hutool.core.collection.CollectionUtil;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import me.zhengjie.exception.BadRequestException;
 import me.zhengjie.modules.system.domain.Menu;
@@ -22,7 +20,6 @@ import java.util.*;
 
 @RestController
 @RequiredArgsConstructor
-@Api(tags = "系统：菜单管理")
 @RequestMapping("/api/menus")
 public class MenuController {
 
@@ -31,21 +28,18 @@ public class MenuController {
     private static final String ENTITY_NAME = "menu";
 
     @GetMapping(value = "/build")
-    @ApiOperation("获取前端所需菜单")
     public ResponseEntity<Object> buildMenus(){
         List<MenuDto> menuDtoList = menuService.findByUser(SecurityUtils.getCurrentUserId());
         List<MenuDto> menuDtos = menuService.buildTree(menuDtoList);
         return new ResponseEntity<>(menuService.buildMenus(menuDtos),HttpStatus.OK);
     }
 
-    @ApiOperation("返回全部的菜单")
     @GetMapping(value = "/lazy")
     @PreAuthorize("@el.check('menu:list','roles:list')")
     public ResponseEntity<Object> query(@RequestParam Long pid){
         return new ResponseEntity<>(menuService.getMenus(pid),HttpStatus.OK);
     }
 
-    @ApiOperation("查询菜单")
     @GetMapping
     @PreAuthorize("@el.check('menu:list')")
     public ResponseEntity<Object> query(MenuQueryCriteria criteria) throws Exception {
@@ -53,7 +47,6 @@ public class MenuController {
         return new ResponseEntity<>(PageUtil.toPage(menuDtoList, menuDtoList.size()),HttpStatus.OK);
     }
 
-    @ApiOperation("查询菜单:根据ID获取同级与上级数据")
     @PostMapping("/superior")
     @PreAuthorize("@el.check('menu:list')")
     public ResponseEntity<Object> getSuperior(@RequestBody List<Long> ids) {
@@ -68,7 +61,6 @@ public class MenuController {
         return new ResponseEntity<>(menuService.getMenus(null),HttpStatus.OK);
     }
 
-    @ApiOperation("新增菜单")
     @PostMapping
     @PreAuthorize("@el.check('menu:add')")
     public ResponseEntity<Object> create(@Validated @RequestBody Menu resources){
@@ -79,7 +71,6 @@ public class MenuController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @ApiOperation("修改菜单")
     @PutMapping
     @PreAuthorize("@el.check('menu:edit')")
     public ResponseEntity<Object> update(@Validated(Menu.Update.class) @RequestBody Menu resources){
@@ -87,7 +78,6 @@ public class MenuController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @ApiOperation("删除菜单")
     @DeleteMapping
     @PreAuthorize("@el.check('menu:del')")
     public ResponseEntity<Object> delete(@RequestBody Set<Long> ids){

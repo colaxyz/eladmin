@@ -1,8 +1,6 @@
 package me.zhengjie.modules.system.rest;
 
 import cn.hutool.core.lang.Dict;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import me.zhengjie.exception.BadRequestException;
 import me.zhengjie.modules.system.domain.Role;
@@ -25,7 +23,6 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
-@Api(tags = "系统：角色管理")
 @RequestMapping("/api/roles")
 public class RoleController {
 
@@ -33,34 +30,29 @@ public class RoleController {
 
     private static final String ENTITY_NAME = "role";
 
-    @ApiOperation("获取单个role")
     @GetMapping(value = "/{id}")
     @PreAuthorize("@el.check('roles:list')")
     public ResponseEntity<Object> query(@PathVariable Long id){
         return new ResponseEntity<>(roleService.findById(id), HttpStatus.OK);
     }
 
-    @ApiOperation("返回全部的角色")
     @GetMapping(value = "/all")
     @PreAuthorize("@el.check('roles:list','user:add','user:edit')")
     public ResponseEntity<Object> query(){
         return new ResponseEntity<>(roleService.queryAll(),HttpStatus.OK);
     }
 
-    @ApiOperation("查询角色")
     @GetMapping
     @PreAuthorize("@el.check('roles:list')")
     public ResponseEntity<Object> query(RoleQueryCriteria criteria, Pageable pageable){
         return new ResponseEntity<>(roleService.queryAll(criteria,pageable),HttpStatus.OK);
     }
 
-    @ApiOperation("获取用户级别")
     @GetMapping(value = "/level")
     public ResponseEntity<Object> getLevel(){
         return new ResponseEntity<>(Dict.create().set("level", getLevels(null)),HttpStatus.OK);
     }
 
-    @ApiOperation("新增角色")
     @PostMapping
     @PreAuthorize("@el.check('roles:add')")
     public ResponseEntity<Object> create(@Validated @RequestBody Role resources){
@@ -72,7 +64,6 @@ public class RoleController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @ApiOperation("修改角色")
     @PutMapping
     @PreAuthorize("@el.check('roles:edit')")
     public ResponseEntity<Object> update(@Validated(Role.Update.class) @RequestBody Role resources){
@@ -81,7 +72,6 @@ public class RoleController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @ApiOperation("修改角色菜单")
     @PutMapping(value = "/menu")
     @PreAuthorize("@el.check('roles:edit')")
     public ResponseEntity<Object> updateMenu(@RequestBody Role resources){
@@ -91,7 +81,6 @@ public class RoleController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @ApiOperation("删除角色")
     @DeleteMapping
     @PreAuthorize("@el.check('roles:del')")
     public ResponseEntity<Object> delete(@RequestBody Set<Long> ids){

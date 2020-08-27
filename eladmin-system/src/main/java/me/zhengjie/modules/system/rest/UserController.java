@@ -1,7 +1,5 @@
 package me.zhengjie.modules.system.rest;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import me.zhengjie.config.RsaProperties;
 import me.zhengjie.exception.BadRequestException;
@@ -27,7 +25,6 @@ import java.util.Collections;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-@Api(tags = "系统：用户管理")
 @RestController
 @RequestMapping("/api/users")
 @RequiredArgsConstructor
@@ -37,14 +34,12 @@ public class UserController {
     private final UserService userService;
     private final RoleService roleService;
 
-    @ApiOperation("查询用户")
     @GetMapping
     @PreAuthorize("@el.check('user:list')")
     public ResponseEntity<Object> query(UserQueryCriteria criteria, Pageable pageable) {
         return new ResponseEntity<>(userService.queryAll(criteria, pageable), HttpStatus.OK);
     }
 
-    @ApiOperation("新增用户")
     @PostMapping
     @PreAuthorize("@el.check('user:add')")
     public ResponseEntity<Object> create(@Validated @RequestBody User resources) {
@@ -55,7 +50,6 @@ public class UserController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @ApiOperation("修改用户")
     @PutMapping
     @PreAuthorize("@el.check('user:edit')")
     public ResponseEntity<Object> update(@Validated(User.Update.class) @RequestBody User resources) {
@@ -64,7 +58,6 @@ public class UserController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @ApiOperation("修改用户：个人中心")
     @PutMapping(value = "center")
     public ResponseEntity<Object> center(@Validated(User.Update.class) @RequestBody User resources) {
         if (!resources.getId().equals(SecurityUtils.getCurrentUserId())) {
@@ -74,7 +67,6 @@ public class UserController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @ApiOperation("删除用户")
     @DeleteMapping
     @PreAuthorize("@el.check('user:del')")
     public ResponseEntity<Object> delete(@RequestBody Set<Long> ids) {
@@ -89,7 +81,6 @@ public class UserController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @ApiOperation("修改密码")
     @PostMapping(value = "/updatePass")
     public ResponseEntity<Object> updatePass(@RequestBody UserPassVo passVo) throws Exception {
         String oldPass = RsaUtils.decryptByPrivateKey(RsaProperties.privateKey, passVo.getOldPass());
@@ -105,13 +96,11 @@ public class UserController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @ApiOperation("修改头像")
     @PostMapping(value = "/updateAvatar")
     public ResponseEntity<Object> updateAvatar(@RequestParam MultipartFile avatar) {
         return new ResponseEntity<>(userService.updateAvatar(avatar), HttpStatus.OK);
     }
 
-    @ApiOperation("修改邮箱")
     @PostMapping(value = "/updateEmail")
     public ResponseEntity<Object> updateEmail(@RequestBody User user) throws Exception {
         String password = RsaUtils.decryptByPrivateKey(RsaProperties.privateKey, user.getPassword());
