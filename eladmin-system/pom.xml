@@ -23,12 +23,6 @@
             <version>2.5</version>
         </dependency>
 
-        <!-- Spring boot websocket -->
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-websocket</artifactId>
-		</dependency>
-
         <!-- jwt -->
         <dependency>
             <groupId>io.jsonwebtoken</groupId>

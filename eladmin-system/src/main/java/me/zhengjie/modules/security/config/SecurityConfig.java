@@ -89,8 +89,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/*.html",
                         "/**/*.html",
                         "/**/*.css",
-                        "/**/*.js",
-                        "/webSocket/**"
+                        "/**/*.js"
                 ).permitAll()
                 // 文件
                 .antMatchers("/avatar/**").permitAll()
