@@ -4,8 +4,6 @@ import lombok.Data;
 import me.zhengjie.annotation.Query;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
-import java.util.List;
 
 @Data
 public class UserQueryCriteria implements Serializable {
@@ -16,6 +14,4 @@ public class UserQueryCriteria implements Serializable {
     @Query(blurry = "username,nickName")
     private String blurry;
 
-    @Query(type = Query.Type.BETWEEN)
-    private List<Timestamp> createTime;
 }

@@ -3,9 +3,6 @@ package me.zhengjie.modules.system.service.dto;
 import lombok.Data;
 import me.zhengjie.annotation.Query;
 
-import java.sql.Timestamp;
-import java.util.List;
-
 @Data
 public class DeptQueryCriteria{
 
@@ -21,6 +18,4 @@ public class DeptQueryCriteria{
     @Query(type = Query.Type.IS_NULL, propName = "pid")
     private Boolean pidIsNull;
 
-    @Query(type = Query.Type.BETWEEN)
-    private List<Timestamp> createTime;
 }

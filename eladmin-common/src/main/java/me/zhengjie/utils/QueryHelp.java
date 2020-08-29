@@ -12,10 +12,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-/**
- * @author Zheng Jie
- * @date 2019-6-4 14:59:48
- */
 @Slf4j
 @SuppressWarnings({"unchecked","all"})
 public class QueryHelp {
@@ -126,11 +122,6 @@ public class QueryHelp {
                             break;
                         case IS_NULL:
                             list.add(cb.isNull(getExpression(attributeName,join,root)));
-                            break;
-                        case BETWEEN:
-                            List<Object> between = new ArrayList<>((List<Object>)val);
-                            list.add(cb.between(getExpression(attributeName, join, root).as((Class<? extends Comparable>) between.get(0).getClass()),
-                                    (Comparable) between.get(0), (Comparable) between.get(1)));
                             break;
                         default: break;
                     }

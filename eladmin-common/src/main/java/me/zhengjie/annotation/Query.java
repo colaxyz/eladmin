@@ -5,10 +5,6 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-/**
- * @author Zheng Jie
- * @date 2019-6-4 13:52:30
- */
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Query {
@@ -52,8 +48,6 @@ public @interface Query {
         , IN
         // 不等于
         ,NOT_EQUAL
-        // between
-        ,BETWEEN
         // 不为空
         ,NOT_NULL
         // 为空
