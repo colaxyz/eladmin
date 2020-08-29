@@ -1,7 +1,7 @@
 package me.zhengjie.modules.security.rest;
 
 import cn.hutool.core.util.IdUtil;
-import com.wf.captcha.base.Captcha;
+import com.wf.captcha.ArithmeticCaptcha;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import me.zhengjie.annotation.rest.AnonymousDeleteMapping;
@@ -9,7 +9,6 @@ import me.zhengjie.annotation.rest.AnonymousGetMapping;
 import me.zhengjie.annotation.rest.AnonymousPostMapping;
 import me.zhengjie.config.RsaProperties;
 import me.zhengjie.exception.BadRequestException;
-import me.zhengjie.modules.security.config.bean.LoginProperties;
 import me.zhengjie.modules.security.config.bean.SecurityProperties;
 import me.zhengjie.modules.security.security.TokenProvider;
 import me.zhengjie.modules.security.service.OnlineUserService;
@@ -19,6 +18,7 @@ import me.zhengjie.utils.RedisUtils;
 import me.zhengjie.utils.RsaUtils;
 import me.zhengjie.utils.SecurityUtils;
 import me.zhengjie.utils.StringUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -31,7 +31,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
@@ -47,13 +46,15 @@ import java.util.concurrent.TimeUnit;
 @RequestMapping("/auth")
 @RequiredArgsConstructor
 public class AuthorizationController {
+    @Value("${loginCode.expiration}")
+    private Long expiration;
+    @Value("${single.login}")
+    private Boolean singleLogin;
     private final SecurityProperties properties;
     private final RedisUtils redisUtils;
     private final OnlineUserService onlineUserService;
     private final TokenProvider tokenProvider;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
-    @Resource
-    private LoginProperties loginProperties;
 
     @AnonymousPostMapping(value = "/login")
     public ResponseEntity<Object> login(@Validated @RequestBody AuthUserDto authUser, HttpServletRequest request) throws Exception {
@@ -83,7 +84,7 @@ public class AuthorizationController {
             put("token", properties.getTokenStartWith() + token);
             put("user", jwtUserDto);
         }};
-        if (loginProperties.isSingleLogin()) {
+        if (singleLogin) {
             //踢掉之前已经登录的token
             onlineUserService.checkLoginOnUser(authUser.getUsername(), token);
         }
@@ -97,11 +98,15 @@ public class AuthorizationController {
 
     @AnonymousGetMapping(value = "/code")
     public ResponseEntity<Object> getCode() {
+        // 算术类型 https://gitee.com/whvse/EasyCaptcha
+        ArithmeticCaptcha captcha = new ArithmeticCaptcha(111, 36);
+        // 几位数运算，默认是两位
+        captcha.setLen(2);
         // 获取运算的结果
-        Captcha captcha = loginProperties.getCaptcha();
+        String result = captcha.text();
         String uuid = properties.getCodeKey() + IdUtil.simpleUUID();
         // 保存
-        redisUtils.set(uuid, captcha.text(), loginProperties.getLoginCode().getExpiration(), TimeUnit.MINUTES);
+        redisUtils.set(uuid, result, expiration, TimeUnit.MINUTES);
         // 验证码信息
         Map<String, Object> imgResult = new HashMap<String, Object>(2) {{
             put("img", captcha.toBase64());

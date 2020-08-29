@@ -1,6 +1,5 @@
 package me.zhengjie;
 
-import me.zhengjie.annotation.rest.AnonymousGetMapping;
 import me.zhengjie.utils.SpringContextHolder;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -41,13 +40,4 @@ public class AppRun {
         return fa;
     }
 
-    /**
-     * 访问首页提示
-     *
-     * @return /
-     */
-    @AnonymousGetMapping("/")
-    public String index() {
-        return "Backend service started successfully";
-    }
 }
