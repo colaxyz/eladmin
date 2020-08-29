@@ -1,6 +1,5 @@
 package me.zhengjie.utils;
 
-import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjectUtil;
 import lombok.extern.slf4j.Slf4j;
 import me.zhengjie.annotation.Query;
@@ -9,7 +8,6 @@ import javax.persistence.criteria.*;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 
 @Slf4j
@@ -85,18 +83,6 @@ public class QueryHelp {
                             list.add(cb.equal(getExpression(attributeName,join,root)
                                     .as((Class<? extends Comparable>) fieldType),val));
                             break;
-                        case GREATER_THAN:
-                            list.add(cb.greaterThanOrEqualTo(getExpression(attributeName,join,root)
-                                    .as((Class<? extends Comparable>) fieldType), (Comparable) val));
-                            break;
-                        case LESS_THAN:
-                            list.add(cb.lessThanOrEqualTo(getExpression(attributeName,join,root)
-                                    .as((Class<? extends Comparable>) fieldType), (Comparable) val));
-                            break;
-                        case LESS_THAN_NQ:
-                            list.add(cb.lessThan(getExpression(attributeName,join,root)
-                                    .as((Class<? extends Comparable>) fieldType), (Comparable) val));
-                            break;
                         case INNER_LIKE:
                             list.add(cb.like(getExpression(attributeName,join,root)
                                     .as(String.class), "%" + val.toString() + "%"));
@@ -108,14 +94,6 @@ public class QueryHelp {
                         case RIGHT_LIKE:
                             list.add(cb.like(getExpression(attributeName,join,root)
                                     .as(String.class), val.toString() + "%"));
-                            break;
-                        case IN:
-                            if (CollUtil.isNotEmpty((Collection<Long>)val)) {
-                                list.add(getExpression(attributeName,join,root).in((Collection<Long>) val));
-                            }
-                            break;
-                        case NOT_EQUAL:
-                            list.add(cb.notEqual(getExpression(attributeName,join,root), val));
                             break;
                         case NOT_NULL:
                             list.add(cb.isNotNull(getExpression(attributeName,join,root)));

@@ -8,10 +8,6 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 
-/**
-* @author Zheng Jie
-* @date 2019-03-25
-*/
 @Getter
 @Setter
 public class DeptDto extends BaseDTO implements Serializable {
