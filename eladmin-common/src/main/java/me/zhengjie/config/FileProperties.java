@@ -5,9 +5,6 @@ import me.zhengjie.utils.ElAdminConstant;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
-/**
- * @author Zheng Jie
- */
 @Data
 @Configuration
 @ConfigurationProperties(prefix = "file")
