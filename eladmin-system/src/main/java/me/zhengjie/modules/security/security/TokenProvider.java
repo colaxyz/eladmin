@@ -27,9 +27,6 @@ import java.util.Date;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
-/**
- * @author /
- */
 @Slf4j
 @Component
 public class TokenProvider implements InitializingBean {
