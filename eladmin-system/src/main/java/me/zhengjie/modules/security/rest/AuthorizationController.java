@@ -18,7 +18,6 @@ import me.zhengjie.utils.RedisUtils;
 import me.zhengjie.utils.RsaUtils;
 import me.zhengjie.utils.SecurityUtils;
 import me.zhengjie.utils.StringUtils;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -44,8 +43,6 @@ import java.util.concurrent.TimeUnit;
 @RequestMapping("/auth")
 @RequiredArgsConstructor
 public class AuthorizationController {
-    @Value("${loginCode.expiration}")
-    private Long expiration;
     private final SecurityProperties properties;
     private final RedisUtils redisUtils;
     private final OnlineUserService onlineUserService;
@@ -97,8 +94,8 @@ public class AuthorizationController {
         // 获取运算的结果
         String result = captcha.text();
         String uuid = properties.getCodeKey() + IdUtil.simpleUUID();
-        // 保存
-        redisUtils.set(uuid, result, expiration, TimeUnit.MINUTES);
+        // 存入redis并设置过期时间为2分钟
+        redisUtils.set(uuid, result, 2, TimeUnit.MINUTES);
         // 验证码信息
         Map<String, Object> imgResult = new HashMap<String, Object>(2) {{
             put("img", captcha.toBase64());
