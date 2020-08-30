@@ -43,6 +43,9 @@ public class Role extends BaseEntity implements Serializable {
     @NotBlank
     private String name;
 
+    @Column(name = "level")
+    private Integer level = 3;
+
     private String description;
 
     @Override
