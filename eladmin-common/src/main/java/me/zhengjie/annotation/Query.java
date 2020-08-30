@@ -38,8 +38,6 @@ public @interface Query {
         , LEFT_LIKE
         // Dong ZhaoYang 2017/8/7 右模糊查询
         , RIGHT_LIKE
-        // 不为空
-        ,NOT_NULL
         // 为空
         ,IS_NULL
     }

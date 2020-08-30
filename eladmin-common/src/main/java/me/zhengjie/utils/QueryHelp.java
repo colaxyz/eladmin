@@ -95,9 +95,6 @@ public class QueryHelp {
                             list.add(cb.like(getExpression(attributeName,join,root)
                                     .as(String.class), val.toString() + "%"));
                             break;
-                        case NOT_NULL:
-                            list.add(cb.isNotNull(getExpression(attributeName,join,root)));
-                            break;
                         case IS_NULL:
                             list.add(cb.isNull(getExpression(attributeName,join,root)));
                             break;

@@ -15,10 +15,6 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
-/**
- * @author Zheng Jie
- * @date 2019年10月26日21:56:27
- */
 @Service
 @Slf4j
 public class OnlineUserService {
