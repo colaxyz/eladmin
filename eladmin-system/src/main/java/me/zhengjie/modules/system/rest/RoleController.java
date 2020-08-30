@@ -80,5 +80,5 @@ public class RoleController {
         roleService.delete(ids);
         return new ResponseEntity<>(HttpStatus.OK);
     }
-    
+
 }
