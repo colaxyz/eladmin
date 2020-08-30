@@ -57,7 +57,7 @@ public class AuthorizationController {
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
 
     @AnonymousPostMapping(value = "/login")
-    public ResponseEntity<Object> login(@Validated @RequestBody AuthUserDto authUser, HttpServletRequest request) throws Exception {
+    public ResponseEntity<Object> login(@Validated @RequestBody AuthUserDto authUser) throws Exception {
         // 密码解密
         String password = RsaUtils.decryptByPrivateKey(RsaProperties.privateKey, authUser.getPassword());
         // 查询验证码
