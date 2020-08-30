@@ -52,13 +52,6 @@ public interface RoleService {
     List<RoleSmallDto> findByUsersId(Long id);
 
     /**
-     * 根据角色查询角色级别
-     * @param roles /
-     * @return /
-     */
-    Integer findByRoles(Set<Role> roles);
-
-    /**
      * 修改绑定的菜单
      * @param resources /
      * @param roleDTO /

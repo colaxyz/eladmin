@@ -22,13 +22,15 @@ import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -45,8 +47,7 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public List<RoleDto> queryAll() {
-        Sort sort = new Sort(Sort.Direction.ASC, "level");
-        return roleMapper.toDto(roleRepository.findAll(sort));
+        return roleMapper.toDto(roleRepository.findAll());
     }
 
     @Override
@@ -92,7 +93,6 @@ public class RoleServiceImpl implements RoleService {
         role.setName(resources.getName());
         role.setDescription(resources.getDescription());
         role.setDepts(resources.getDepts());
-        role.setLevel(resources.getLevel());
         roleRepository.save(role);
         // 更新相关缓存
         delCaches(role.getId(), null);
@@ -128,15 +128,6 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public List<RoleSmallDto> findByUsersId(Long id) {
         return roleSmallMapper.toDto(new ArrayList<>(roleRepository.findByUserId(id)));
-    }
-
-    @Override
-    public Integer findByRoles(Set<Role> roles) {
-        Set<RoleDto> roleDtos = new HashSet<>();
-        for (Role role : roles) {
-            roleDtos.add(findById(role.getId()));
-        }
-        return Collections.min(roleDtos.stream().map(RoleDto::getLevel).collect(Collectors.toList()));
     }
 
     @Override
