@@ -43,7 +43,6 @@ public class UserController {
     @PostMapping
     @PreAuthorize("@el.check('user:add')")
     public ResponseEntity<Object> create(@Validated @RequestBody User resources) {
-        checkLevel(resources);
         // 默认密码 123456
         resources.setPassword(passwordEncoder.encode("123456"));
         userService.create(resources);
@@ -53,7 +52,6 @@ public class UserController {
     @PutMapping
     @PreAuthorize("@el.check('user:edit')")
     public ResponseEntity<Object> update(@Validated(User.Update.class) @RequestBody User resources) {
-        checkLevel(resources);
         userService.update(resources);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
@@ -112,16 +110,4 @@ public class UserController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    /**
-     * 如果当前用户的角色级别低于创建用户的角色级别，则抛出权限不足的错误
-     *
-     * @param resources /
-     */
-    private void checkLevel(User resources) {
-        Integer currentLevel = Collections.min(roleService.findByUsersId(SecurityUtils.getCurrentUserId()).stream().map(RoleSmallDto::getLevel).collect(Collectors.toList()));
-        Integer optLevel = roleService.findByRoles(resources.getRoles());
-        if (currentLevel > optLevel) {
-            throw new BadRequestException("角色权限不足");
-        }
-    }
 }

@@ -1,6 +1,5 @@
 package me.zhengjie.modules.system.rest;
 
-import cn.hutool.core.lang.Dict;
 import lombok.RequiredArgsConstructor;
 import me.zhengjie.exception.BadRequestException;
 import me.zhengjie.modules.system.domain.Role;
@@ -48,18 +47,12 @@ public class RoleController {
         return new ResponseEntity<>(roleService.queryAll(criteria,pageable),HttpStatus.OK);
     }
 
-    @GetMapping(value = "/level")
-    public ResponseEntity<Object> getLevel(){
-        return new ResponseEntity<>(Dict.create().set("level", getLevels(null)),HttpStatus.OK);
-    }
-
     @PostMapping
     @PreAuthorize("@el.check('roles:add')")
     public ResponseEntity<Object> create(@Validated @RequestBody Role resources){
         if (resources.getId() != null) {
             throw new BadRequestException("A new "+ ENTITY_NAME +" cannot already have an ID");
         }
-        getLevels(resources.getLevel());
         roleService.create(resources);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
@@ -67,7 +60,6 @@ public class RoleController {
     @PutMapping
     @PreAuthorize("@el.check('roles:edit')")
     public ResponseEntity<Object> update(@Validated(Role.Update.class) @RequestBody Role resources){
-        getLevels(resources.getLevel());
         roleService.update(resources);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
@@ -76,7 +68,6 @@ public class RoleController {
     @PreAuthorize("@el.check('roles:edit')")
     public ResponseEntity<Object> updateMenu(@RequestBody Role resources){
         RoleDto role = roleService.findById(resources.getId());
-        getLevels(role.getLevel());
         roleService.updateMenu(resources,role);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
@@ -84,28 +75,10 @@ public class RoleController {
     @DeleteMapping
     @PreAuthorize("@el.check('roles:del')")
     public ResponseEntity<Object> delete(@RequestBody Set<Long> ids){
-        for (Long id : ids) {
-            RoleDto role = roleService.findById(id);
-            getLevels(role.getLevel());
-        }
         // 验证是否被用户关联
         roleService.verification(ids);
         roleService.delete(ids);
         return new ResponseEntity<>(HttpStatus.OK);
     }
-
-    /**
-     * 获取用户的角色级别
-     * @return /
-     */
-    private int getLevels(Integer level){
-        List<Integer> levels = roleService.findByUsersId(SecurityUtils.getCurrentUserId()).stream().map(RoleSmallDto::getLevel).collect(Collectors.toList());
-        int min = Collections.min(levels);
-        if(level != null){
-            if(level < min){
-                throw new BadRequestException("权限不足，你的角色级别：" + min + "，低于操作的角色级别：" + level);
-            }
-        }
-        return min;
-    }
+    
 }
