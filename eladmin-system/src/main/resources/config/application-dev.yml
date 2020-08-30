@@ -35,10 +35,6 @@ spring:
           config:
             multi-statement-allow: true
 
-# 是否限制单用户登录
-single:
-  login: false
-
 #登录图形验证码有效时间/分钟
 loginCode:
   expiration: 2

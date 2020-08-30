@@ -93,31 +93,6 @@ public class OnlineUserService {
     }
 
     /**
-     * 检测用户是否在之前已经登录，已经登录踢下线
-     * @param userName 用户名
-     */
-    public void checkLoginOnUser(String userName, String igoreToken){
-        List<OnlineUserDto> onlineUserDtos = getAll(userName);
-        if(onlineUserDtos ==null || onlineUserDtos.isEmpty()){
-            return;
-        }
-        for(OnlineUserDto onlineUserDto : onlineUserDtos){
-            if(onlineUserDto.getUserName().equals(userName)){
-                try {
-                    String token =EncryptUtils.desDecrypt(onlineUserDto.getKey());
-                    if(StringUtils.isNotBlank(igoreToken)&&!igoreToken.equals(token)){
-                        this.kickOut(token);
-                    }else if(StringUtils.isBlank(igoreToken)){
-                        this.kickOut(token);
-                    }
-                } catch (Exception e) {
-                    log.error("checkUser is error",e);
-                }
-            }
-        }
-    }
-
-    /**
      * 根据用户名强退用户
      * @param username /
      */

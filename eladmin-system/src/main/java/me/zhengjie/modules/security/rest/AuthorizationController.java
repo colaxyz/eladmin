@@ -37,8 +37,6 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 /**
- * @author Zheng Jie
- * @date 2018-11-23
  * 授权、根据token获取用户详细信息
  */
 @Slf4j
@@ -48,8 +46,6 @@ import java.util.concurrent.TimeUnit;
 public class AuthorizationController {
     @Value("${loginCode.expiration}")
     private Long expiration;
-    @Value("${single.login}")
-    private Boolean singleLogin;
     private final SecurityProperties properties;
     private final RedisUtils redisUtils;
     private final OnlineUserService onlineUserService;
@@ -84,10 +80,6 @@ public class AuthorizationController {
             put("token", properties.getTokenStartWith() + token);
             put("user", jwtUserDto);
         }};
-        if (singleLogin) {
-            //踢掉之前已经登录的token
-            onlineUserService.checkLoginOnUser(authUser.getUsername(), token);
-        }
         return ResponseEntity.ok(authInfo);
     }
 
