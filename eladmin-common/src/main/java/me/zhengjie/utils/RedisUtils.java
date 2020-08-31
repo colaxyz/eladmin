@@ -16,9 +16,6 @@ import org.springframework.stereotype.Component;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
-/**
- * @author /
- */
 @Component
 @SuppressWarnings({"unchecked", "all"})
 public class RedisUtils {
@@ -41,25 +38,6 @@ public class RedisUtils {
         try {
             if (time > 0) {
                 redisTemplate.expire(key, time, TimeUnit.SECONDS);
-            }
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
-            return false;
-        }
-        return true;
-    }
-
-    /**
-     * 指定缓存失效时间
-     *
-     * @param key      键
-     * @param time     时间(秒)
-     * @param timeUnit 单位
-     */
-    public boolean expire(String key, long time, TimeUnit timeUnit) {
-        try {
-            if (time > 0) {
-                redisTemplate.expire(key, time, timeUnit);
             }
         } catch (Exception e) {
             log.error(e.getMessage(), e);

@@ -47,7 +47,7 @@ public @interface Query {
      */
     enum Join {
         /** jie 2019-6-4 13:18:30 */
-        LEFT, RIGHT, INNER
+        LEFT, RIGHT
     }
 
 }

@@ -67,13 +67,6 @@ public class QueryHelp {
                                         join = root.join(name, JoinType.RIGHT);
                                     }
                                     break;
-                                case INNER:
-                                    if(ObjectUtil.isNotNull(join) && ObjectUtil.isNotNull(val)){
-                                        join = join.join(name, JoinType.INNER);
-                                    } else {
-                                        join = root.join(name, JoinType.INNER);
-                                    }
-                                    break;
                                 default: break;
                             }
                         }
