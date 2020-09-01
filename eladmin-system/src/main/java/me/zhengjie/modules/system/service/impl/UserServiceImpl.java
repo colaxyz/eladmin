@@ -5,7 +5,6 @@ import me.zhengjie.config.FileProperties;
 import me.zhengjie.exception.EntityExistException;
 import me.zhengjie.exception.EntityNotFoundException;
 import me.zhengjie.modules.security.service.OnlineUserService;
-import me.zhengjie.modules.security.service.UserCacheClean;
 import me.zhengjie.modules.system.domain.User;
 import me.zhengjie.modules.system.repository.UserRepository;
 import me.zhengjie.modules.system.service.UserService;
@@ -21,7 +20,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.constraints.NotBlank;
 import java.io.File;
 import java.util.*;
 
@@ -34,7 +32,6 @@ public class UserServiceImpl implements UserService {
     private final UserMapper userMapper;
     private final FileProperties properties;
     private final RedisUtils redisUtils;
-    private final UserCacheClean userCacheClean;
     private final OnlineUserService onlineUserService;
 
     @Override
@@ -81,9 +78,9 @@ public class UserServiceImpl implements UserService {
         }
         // 如果用户的角色改变
         if (!resources.getRoles().equals(user.getRoles())) {
-            redisUtils.del(CacheKey.DATE_USER + resources.getId());
-            redisUtils.del(CacheKey.MENU_USER + resources.getId());
-            redisUtils.del(CacheKey.ROLE_AUTH + resources.getId());
+            redisUtils.del("data::user:" + resources.getId());
+            redisUtils.del("menu::user:" + resources.getId());
+            redisUtils.del("role::auth:" + resources.getId());
         }
         // 如果用户名称修改
         if(!resources.getUsername().equals(user.getUsername())){
@@ -145,7 +142,6 @@ public class UserServiceImpl implements UserService {
     public void updatePass(String username, String pass) {
         userRepository.updatePass(username, pass, new Date());
         redisUtils.del("user::username:" + username);
-        flushCache(username);
     }
 
     @Override
@@ -160,20 +156,15 @@ public class UserServiceImpl implements UserService {
         if (StringUtils.isNotBlank(oldPath)) {
             FileUtil.del(oldPath);
         }
-        @NotBlank String username = user.getUsername();
-        redisUtils.del(CacheKey.USER_NAME + username);
-        flushCache(username);
-        return new HashMap<String, String>(1) {{
-            put("avatar", file.getName());
-        }};
+        redisUtils.del("user::username:" + user.getUsername());
+        return new HashMap<String,String>(1){{put("avatar",file.getName());}};
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void updateEmail(String username, String email) {
-        userRepository.updateEmail(username, email);
-        redisUtils.del(CacheKey.USER_NAME + username);
-        flushCache(username);
+        userRepository.updateEmail(username,email);
+        redisUtils.del("user::username:" + username);
     }
 
     /**
@@ -182,17 +173,8 @@ public class UserServiceImpl implements UserService {
      * @param id /
      */
     public void delCaches(Long id, String username) {
-        redisUtils.del(CacheKey.USER_ID + id);
-        redisUtils.del(CacheKey.USER_NAME + username);
-        flushCache(username);
+        redisUtils.del("user::id:" + id);
+        redisUtils.del("user::username:" + username);
     }
 
-    /**
-     * 清理 登陆时 用户缓存信息
-     *
-     * @param username /
-     */
-    private void flushCache(String username) {
-        userCacheClean.cleanUserCache(username);
-    }
 }

@@ -1,10 +1,8 @@
 package me.zhengjie.modules.system.service.impl;
 
-import cn.hutool.core.collection.CollectionUtil;
 import lombok.RequiredArgsConstructor;
 import me.zhengjie.exception.BadRequestException;
 import me.zhengjie.exception.EntityExistException;
-import me.zhengjie.modules.security.service.UserCacheClean;
 import me.zhengjie.modules.system.domain.Menu;
 import me.zhengjie.modules.system.domain.Role;
 import me.zhengjie.modules.system.domain.User;
@@ -43,7 +41,6 @@ public class RoleServiceImpl implements RoleService {
     private final RoleSmallMapper roleSmallMapper;
     private final RedisUtils redisUtils;
     private final UserRepository userRepository;
-    private final UserCacheClean userCacheClean;
 
     @Override
     public List<RoleDto> queryAll() {
@@ -95,16 +92,19 @@ public class RoleServiceImpl implements RoleService {
         role.setDepts(resources.getDepts());
         roleRepository.save(role);
         // 更新相关缓存
-        delCaches(role.getId(), null);
+        delCaches(role.getId());
     }
 
     @Override
     public void updateMenu(Role resources, RoleDto roleDTO) {
         Role role = roleMapper.toEntity(roleDTO);
         List<User> users = userRepository.findByRoleId(role.getId());
+        Set<Long> userIds = users.stream().map(User::getId).collect(Collectors.toSet());
         // 更新菜单
         role.setMenus(resources.getMenus());
-        delCaches(resources.getId(), users);
+        redisUtils.delByKeys("menu::user:",userIds);
+        redisUtils.delByKeys("role::auth:",userIds);
+        redisUtils.del("role::id:" + resources.getId());
         roleRepository.save(role);
     }
 
@@ -120,7 +120,7 @@ public class RoleServiceImpl implements RoleService {
     public void delete(Set<Long> ids) {
         for (Long id : ids) {
             // 更新相关缓存
-            delCaches(id, null);
+            delCaches(id);
         }
         roleRepository.deleteAllByIdIn(ids);
     }
@@ -164,16 +164,12 @@ public class RoleServiceImpl implements RoleService {
      * 清理缓存
      * @param id /
      */
-    public void delCaches(Long id, List<User> users) {
-        users = CollectionUtil.isEmpty(users) ? userRepository.findByRoleId(id) : users;
-        if (CollectionUtil.isNotEmpty(users)) {
-            users.forEach(item -> userCacheClean.cleanUserCache(item.getUsername()));
-            Set<Long> userIds = users.stream().map(User::getId).collect(Collectors.toSet());
-            redisUtils.delByKeys(CacheKey.DATE_USER, userIds);
-            redisUtils.delByKeys(CacheKey.MENU_USER, userIds);
-            redisUtils.delByKeys(CacheKey.ROLE_AUTH, userIds);
-            redisUtils.del(CacheKey.ROLE_ID + id);
-        }
-
+    public void delCaches(Long id){
+        List<User> users = userRepository.findByRoleId(id);
+        Set<Long> userIds = users.stream().map(User::getId).collect(Collectors.toSet());
+        redisUtils.delByKeys("data::user:",userIds);
+        redisUtils.delByKeys("menu::user:",userIds);
+        redisUtils.delByKeys("role::auth:",userIds);
     }
+
 }

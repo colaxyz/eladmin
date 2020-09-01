@@ -2,12 +2,12 @@ package me.zhengjie.modules.security.security;
 
 import cn.hutool.core.util.StrUtil;
 import io.jsonwebtoken.ExpiredJwtException;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import me.zhengjie.modules.security.config.bean.SecurityProperties;
-import me.zhengjie.modules.security.service.UserCacheClean;
-import me.zhengjie.modules.security.service.dto.OnlineUserDto;
 import me.zhengjie.modules.security.service.OnlineUserService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import me.zhengjie.modules.security.service.dto.OnlineUserDto;
+import me.zhengjie.utils.SpringContextHolder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.StringUtils;
@@ -19,29 +19,11 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.util.Objects;
 
+@Slf4j
+@RequiredArgsConstructor
 public class TokenFilter extends GenericFilterBean {
-    private static final Logger log = LoggerFactory.getLogger(TokenFilter.class);
-
-
     private final TokenProvider tokenProvider;
-    private final SecurityProperties properties;
-    private final OnlineUserService onlineUserService;
-    private final UserCacheClean userCacheClean;
-
-    /**
-     * @param tokenProvider     Token
-     * @param properties        JWT
-     * @param onlineUserService 用户在线
-     * @param userCacheClean    用户缓存清理工具
-     */
-    public TokenFilter(TokenProvider tokenProvider, SecurityProperties properties, OnlineUserService onlineUserService, UserCacheClean userCacheClean) {
-        this.properties = properties;
-        this.onlineUserService = onlineUserService;
-        this.tokenProvider = tokenProvider;
-        this.userCacheClean = userCacheClean;
-    }
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
@@ -49,18 +31,14 @@ public class TokenFilter extends GenericFilterBean {
         HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
         String token = resolveToken(httpServletRequest);
         // 对于 Token 为空的不需要去查 Redis
-        if (StrUtil.isNotBlank(token)) {
+        if(StrUtil.isNotBlank(token)){
             OnlineUserDto onlineUserDto = null;
-            boolean cleanUserCache = false;
+            SecurityProperties properties = SpringContextHolder.getBean(SecurityProperties.class);
             try {
+                OnlineUserService onlineUserService = SpringContextHolder.getBean(OnlineUserService.class);
                 onlineUserDto = onlineUserService.getOne(properties.getOnlineKey() + token);
             } catch (ExpiredJwtException e) {
                 log.error(e.getMessage());
-                cleanUserCache = true;
-            } finally {
-                if (cleanUserCache || Objects.isNull(onlineUserDto)) {
-                    userCacheClean.cleanUserCache(String.valueOf(tokenProvider.getClaims(token).get(TokenProvider.AUTHORITIES_KEY)));
-                }
             }
             if (onlineUserDto != null && StringUtils.hasText(token)) {
                 Authentication authentication = tokenProvider.getAuthentication(token);
@@ -70,19 +48,12 @@ public class TokenFilter extends GenericFilterBean {
         filterChain.doFilter(servletRequest, servletResponse);
     }
 
-    /**
-     * 初步检测Token
-     *
-     * @param request /
-     * @return /
-     */
     private String resolveToken(HttpServletRequest request) {
+        SecurityProperties properties = SpringContextHolder.getBean(SecurityProperties.class);
         String bearerToken = request.getHeader(properties.getHeader());
         if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(properties.getTokenStartWith())) {
             // 去掉令牌前缀
-            return bearerToken.replace(properties.getTokenStartWith(), "");
-        } else {
-            log.debug("非法Token：{}", bearerToken);
+            return bearerToken.replace(properties.getTokenStartWith(),"");
         }
         return null;
     }

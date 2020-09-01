@@ -35,11 +35,6 @@ spring:
           config:
             multi-statement-allow: true
 
-# 登录相关配置
-login:
-  # 登录缓存
-  cache-enable: true
-
 #jwt
 jwt:
   header: Authorization

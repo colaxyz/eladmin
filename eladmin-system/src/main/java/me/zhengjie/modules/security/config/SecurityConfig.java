@@ -2,10 +2,10 @@ package me.zhengjie.modules.security.config;
 
 import lombok.RequiredArgsConstructor;
 import me.zhengjie.annotation.AnonymousAccess;
-import me.zhengjie.modules.security.config.bean.SecurityProperties;
-import me.zhengjie.modules.security.security.*;
-import me.zhengjie.modules.security.service.OnlineUserService;
-import me.zhengjie.modules.security.service.UserCacheClean;
+import me.zhengjie.modules.security.security.JwtAccessDeniedHandler;
+import me.zhengjie.modules.security.security.JwtAuthenticationEntryPoint;
+import me.zhengjie.modules.security.security.TokenConfigurer;
+import me.zhengjie.modules.security.security.TokenProvider;
 import me.zhengjie.utils.enums.RequestMethodEnum;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
@@ -39,9 +39,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final JwtAuthenticationEntryPoint authenticationErrorHandler;
     private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
     private final ApplicationContext applicationContext;
-    private final SecurityProperties properties;
-    private final OnlineUserService onlineUserService;
-    private final UserCacheClean userCacheClean;
 
     @Bean
     GrantedAuthorityDefaults grantedAuthorityDefaults() {
@@ -157,6 +154,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     private TokenConfigurer securityConfigurerAdapter() {
-        return new TokenConfigurer(tokenProvider, properties, onlineUserService, userCacheClean);
+        return new TokenConfigurer(tokenProvider);
     }
 }
