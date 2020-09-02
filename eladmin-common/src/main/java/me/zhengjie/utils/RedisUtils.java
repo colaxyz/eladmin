@@ -1,7 +1,5 @@
 package me.zhengjie.utils;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -177,10 +175,8 @@ public class RedisUtils {
      * @return
      */
     public List<Object> multiGet(List<String> keys) {
-        List list = redisTemplate.opsForValue().multiGet(Sets.newHashSet(keys));
-        List resultList = Lists.newArrayList();
-        Optional.ofNullable(list).ifPresent(e-> list.forEach(ele-> Optional.ofNullable(ele).ifPresent(resultList::add)));
-        return resultList;
+        Object obj = redisTemplate.opsForValue().multiGet(Collections.singleton(keys));
+        return null;
     }
 
     /**
@@ -664,11 +660,6 @@ public class RedisUtils {
         for (Long id : ids) {
             keys.addAll(redisTemplate.keys(new StringBuffer(prefix).append(id).toString()));
         }
-        long count = redisTemplate.delete(keys);
-        // 此处提示可自行删除
-        log.debug("--------------------------------------------");
-        log.debug("成功删除缓存：" + keys.toString());
-        log.debug("缓存删除数量：" + count + "个");
-        log.debug("--------------------------------------------");
+        redisTemplate.delete(keys);
     }
 }
