@@ -13,7 +13,6 @@ import me.zhengjie.utils.SecurityUtils;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -30,13 +29,11 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping
-    @PreAuthorize("@el.check('user:list')")
     public ResponseEntity<Object> query(UserQueryCriteria criteria, Pageable pageable) {
         return new ResponseEntity<>(userService.queryAll(criteria, pageable), HttpStatus.OK);
     }
 
     @PostMapping
-    @PreAuthorize("@el.check('user:add')")
     public ResponseEntity<Object> create(@Validated @RequestBody User resources) {
         // 默认密码 123456
         resources.setPassword(passwordEncoder.encode("123456"));
@@ -45,7 +42,6 @@ public class UserController {
     }
 
     @PutMapping
-    @PreAuthorize("@el.check('user:edit')")
     public ResponseEntity<Object> update(@Validated(User.Update.class) @RequestBody User resources) {
         userService.update(resources);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -61,7 +57,6 @@ public class UserController {
     }
 
     @DeleteMapping
-    @PreAuthorize("@el.check('user:del')")
     public ResponseEntity<Object> delete(@RequestBody Set<Long> ids) {
         userService.delete(ids);
         return new ResponseEntity<>(HttpStatus.OK);
