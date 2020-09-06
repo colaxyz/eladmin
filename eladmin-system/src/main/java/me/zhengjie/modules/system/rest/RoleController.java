@@ -9,7 +9,6 @@ import me.zhengjie.modules.system.service.dto.RoleQueryCriteria;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,25 +24,21 @@ public class RoleController {
     private static final String ENTITY_NAME = "role";
 
     @GetMapping(value = "/{id}")
-    @PreAuthorize("@el.check('roles:list')")
     public ResponseEntity<Object> query(@PathVariable Long id){
         return new ResponseEntity<>(roleService.findById(id), HttpStatus.OK);
     }
 
     @GetMapping(value = "/all")
-    @PreAuthorize("@el.check('roles:list','user:add','user:edit')")
     public ResponseEntity<Object> query(){
         return new ResponseEntity<>(roleService.queryAll(),HttpStatus.OK);
     }
 
     @GetMapping
-    @PreAuthorize("@el.check('roles:list')")
     public ResponseEntity<Object> query(RoleQueryCriteria criteria, Pageable pageable){
         return new ResponseEntity<>(roleService.queryAll(criteria,pageable),HttpStatus.OK);
     }
 
     @PostMapping
-    @PreAuthorize("@el.check('roles:add')")
     public ResponseEntity<Object> create(@Validated @RequestBody Role resources){
         if (resources.getId() != null) {
             throw new BadRequestException("A new "+ ENTITY_NAME +" cannot already have an ID");
@@ -53,14 +48,12 @@ public class RoleController {
     }
 
     @PutMapping
-    @PreAuthorize("@el.check('roles:edit')")
     public ResponseEntity<Object> update(@Validated(Role.Update.class) @RequestBody Role resources){
         roleService.update(resources);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @PutMapping(value = "/menu")
-    @PreAuthorize("@el.check('roles:edit')")
     public ResponseEntity<Object> updateMenu(@RequestBody Role resources){
         RoleDto role = roleService.findById(resources.getId());
         roleService.updateMenu(resources,role);
@@ -68,7 +61,6 @@ public class RoleController {
     }
 
     @DeleteMapping
-    @PreAuthorize("@el.check('roles:del')")
     public ResponseEntity<Object> delete(@RequestBody Set<Long> ids){
         // 验证是否被用户关联
         roleService.verification(ids);
