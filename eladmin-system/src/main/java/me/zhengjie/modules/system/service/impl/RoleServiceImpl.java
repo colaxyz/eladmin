@@ -3,7 +3,6 @@ package me.zhengjie.modules.system.service.impl;
 import lombok.RequiredArgsConstructor;
 import me.zhengjie.exception.BadRequestException;
 import me.zhengjie.exception.EntityExistException;
-import me.zhengjie.modules.system.domain.Menu;
 import me.zhengjie.modules.system.domain.Role;
 import me.zhengjie.modules.system.domain.User;
 import me.zhengjie.modules.system.repository.RoleRepository;
@@ -15,7 +14,10 @@ import me.zhengjie.modules.system.service.dto.RoleSmallDto;
 import me.zhengjie.modules.system.service.dto.UserDto;
 import me.zhengjie.modules.system.service.mapstruct.RoleMapper;
 import me.zhengjie.modules.system.service.mapstruct.RoleSmallMapper;
-import me.zhengjie.utils.*;
+import me.zhengjie.utils.PageUtil;
+import me.zhengjie.utils.QueryHelp;
+import me.zhengjie.utils.RedisUtils;
+import me.zhengjie.utils.ValidationUtil;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
@@ -102,8 +104,8 @@ public class RoleServiceImpl implements RoleService {
         Set<Long> userIds = users.stream().map(User::getId).collect(Collectors.toSet());
         // 更新菜单
         role.setMenus(resources.getMenus());
-        redisUtils.delByKeys("menu::user:",userIds);
-        redisUtils.delByKeys("role::auth:",userIds);
+        redisUtils.delByKeys("menu::user:", userIds);
+        redisUtils.delByKeys("role::auth:", userIds);
         redisUtils.del("role::id:" + resources.getId());
         roleRepository.save(role);
     }
@@ -134,16 +136,10 @@ public class RoleServiceImpl implements RoleService {
     @Cacheable(key = "'auth:' + #p0.id")
     public List<GrantedAuthority> mapToGrantedAuthorities(UserDto user) {
         Set<String> permissions = new HashSet<>();
-        // 如果是管理员直接返回
-        if (user.getIsAdmin()) {
-            permissions.add("admin");
-            return permissions.stream().map(SimpleGrantedAuthority::new)
-                    .collect(Collectors.toList());
-        }
         Set<Role> roles = roleRepository.findByUserId(user.getId());
-        permissions = roles.stream().flatMap(role -> role.getMenus().stream())
-                .filter(menu -> StringUtils.isNotBlank(menu.getPermission()))
-                .map(Menu::getPermission).collect(Collectors.toSet());
+        for (Role role : roles) {
+            permissions.add(role.getName());
+        }
         return permissions.stream().map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList());
     }
@@ -162,14 +158,15 @@ public class RoleServiceImpl implements RoleService {
 
     /**
      * 清理缓存
+     *
      * @param id /
      */
-    public void delCaches(Long id){
+    public void delCaches(Long id) {
         List<User> users = userRepository.findByRoleId(id);
         Set<Long> userIds = users.stream().map(User::getId).collect(Collectors.toSet());
-        redisUtils.delByKeys("data::user:",userIds);
-        redisUtils.delByKeys("menu::user:",userIds);
-        redisUtils.delByKeys("role::auth:",userIds);
+        redisUtils.delByKeys("data::user:", userIds);
+        redisUtils.delByKeys("menu::user:", userIds);
+        redisUtils.delByKeys("role::auth:", userIds);
     }
 
 }
