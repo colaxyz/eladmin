@@ -41,6 +41,9 @@ public class Role extends BaseEntity implements Serializable {
     private Set<Dept> depts;
 
     @NotBlank
+    private String roleKey;
+
+    @NotBlank
     private String name;
 
     private String description;

@@ -89,6 +89,7 @@ public class RoleServiceImpl implements RoleService {
         if (role1 != null && !role1.getId().equals(role.getId())) {
             throw new EntityExistException(Role.class, "username", resources.getName());
         }
+        role.setRoleKey(resources.getRoleKey());
         role.setName(resources.getName());
         role.setDescription(resources.getDescription());
         role.setDepts(resources.getDepts());

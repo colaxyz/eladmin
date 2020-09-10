@@ -39,8 +39,5 @@ public class UserDto extends BaseDTO implements Serializable {
 
     private Boolean enabled;
 
-    @JsonIgnore
-    private Boolean isAdmin = false;
-
     private Date pwdResetTime;
 }

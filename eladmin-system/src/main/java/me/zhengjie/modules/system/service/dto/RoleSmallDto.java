@@ -10,4 +10,6 @@ public class RoleSmallDto implements Serializable {
 
     private String name;
 
+    private String roleKey;
+
 }
