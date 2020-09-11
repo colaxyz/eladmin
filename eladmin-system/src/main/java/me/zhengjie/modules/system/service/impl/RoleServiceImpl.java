@@ -139,7 +139,7 @@ public class RoleServiceImpl implements RoleService {
         Set<String> permissions = new HashSet<>();
         Set<Role> roles = roleRepository.findByUserId(user.getId());
         for (Role role : roles) {
-            permissions.add(role.getName());
+            permissions.add(role.getRoleKey());
         }
         return permissions.stream().map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList());
