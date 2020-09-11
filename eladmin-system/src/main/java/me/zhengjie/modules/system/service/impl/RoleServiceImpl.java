@@ -137,7 +137,6 @@ public class RoleServiceImpl implements RoleService {
     public List<GrantedAuthority> mapToGrantedAuthorities(UserDto user) {
         List<GrantedAuthority> grantedAuthorities = user.getRoles().stream().map
                 (role -> new SimpleGrantedAuthority(role.getRoleKey())).collect(Collectors.toList());
-        System.out.println(grantedAuthorities);
         return grantedAuthorities;
     }
 
