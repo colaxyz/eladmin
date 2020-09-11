@@ -28,7 +28,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -136,13 +135,10 @@ public class RoleServiceImpl implements RoleService {
     @Override
     @Cacheable(key = "'auth:' + #p0.id")
     public List<GrantedAuthority> mapToGrantedAuthorities(UserDto user) {
-        Set<String> permissions = new HashSet<>();
-        Set<Role> roles = roleRepository.findByUserId(user.getId());
-        for (Role role : roles) {
-            permissions.add(role.getRoleKey());
-        }
-        return permissions.stream().map(SimpleGrantedAuthority::new)
-                .collect(Collectors.toList());
+        List<GrantedAuthority> grantedAuthorities = user.getRoles().stream().map
+                (role -> new SimpleGrantedAuthority(role.getRoleKey())).collect(Collectors.toList());
+        System.out.println(grantedAuthorities);
+        return grantedAuthorities;
     }
 
     @Override
