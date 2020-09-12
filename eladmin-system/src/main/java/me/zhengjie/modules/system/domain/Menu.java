@@ -40,8 +40,6 @@ public class Menu extends BaseEntity implements Serializable {
 
     private Integer type;
 
-    private String permission;
-
     private String icon;
 
     @Column(columnDefinition = "bit(1) default 0")

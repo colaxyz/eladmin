@@ -160,7 +160,6 @@ public class MenuServiceImpl implements MenuService {
         menu.setCache(resources.getCache());
         menu.setHidden(resources.getHidden());
         menu.setComponentName(resources.getComponentName());
-        menu.setPermission(resources.getPermission());
         menu.setType(resources.getType());
         menuRepository.save(menu);
         // 计算父级菜单节点数目
