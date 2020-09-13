@@ -9,7 +9,6 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.util.Date;
 import java.util.Objects;
 import java.util.Set;
 
@@ -59,9 +58,6 @@ public class User extends BaseEntity implements Serializable {
 
     @NotNull
     private Boolean enabled;
-
-    @Column(name = "pwd_reset_time")
-    private Date pwdResetTime;
 
     @Override
     public boolean equals(Object o) {

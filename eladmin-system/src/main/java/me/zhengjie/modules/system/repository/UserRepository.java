@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
-import java.util.Date;
+
 import java.util.List;
 import java.util.Set;
 
@@ -29,11 +29,10 @@ public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificat
      * 修改密码
      * @param username 用户名
      * @param pass 密码
-     * @param lastPasswordResetTime /
      */
     @Modifying
-    @Query(value = "update sys_user set password = ?2 , pwd_reset_time = ?3 where username = ?1",nativeQuery = true)
-    void updatePass(String username, String pass, Date lastPasswordResetTime);
+    @Query(value = "update sys_user set password = ?2 where username = ?1",nativeQuery = true)
+    void updatePass(String username, String pass);
 
     /**
      * 修改邮箱

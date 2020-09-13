@@ -140,7 +140,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void updatePass(String username, String pass) {
-        userRepository.updatePass(username, pass, new Date());
+        userRepository.updatePass(username, pass);
         redisUtils.del("user::username:" + username);
     }
 

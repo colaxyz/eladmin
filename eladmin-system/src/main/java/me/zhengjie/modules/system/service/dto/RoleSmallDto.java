@@ -8,8 +8,6 @@ public class RoleSmallDto implements Serializable {
 
     private Long id;
 
-    private String name;
-
     private String roleKey;
 
 }

@@ -4,8 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 import me.zhengjie.base.BaseDTO;
+
 import java.io.Serializable;
-import java.util.Date;
 import java.util.Set;
 
 @Getter
@@ -39,5 +39,4 @@ public class UserDto extends BaseDTO implements Serializable {
 
     private Boolean enabled;
 
-    private Date pwdResetTime;
 }
