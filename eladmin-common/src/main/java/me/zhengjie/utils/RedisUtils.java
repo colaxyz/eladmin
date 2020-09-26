@@ -169,17 +169,6 @@ public class RedisUtils {
     }
 
     /**
-     * 批量获取
-     *
-     * @param keys
-     * @return
-     */
-    public List<Object> multiGet(List<String> keys) {
-        Object obj = redisTemplate.opsForValue().multiGet(Collections.singleton(keys));
-        return null;
-    }
-
-    /**
      * 普通缓存放入
      *
      * @param key   键
