@@ -72,9 +72,9 @@ public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificat
 
     /**
      * 根据Id删除
-     * @param ids /
+     * @param id /
      */
-    void deleteAllByIdIn(Set<Long> ids);
+    void deleteAllByIdIn(Long id);
 
     /**
      * 根据部门查询

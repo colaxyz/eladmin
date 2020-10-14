@@ -32,9 +32,9 @@ public interface UserService {
 
     /**
      * 删除用户
-     * @param ids /
+     * @param id /
      */
-    void delete(Set<Long> ids);
+    void delete(Long id);
 
     /**
      * 根据用户名查询

@@ -83,11 +83,11 @@ public class UserServiceImpl implements UserService {
             redisUtils.del("role::auth:" + resources.getId());
         }
         // 如果用户名称修改
-        if(!resources.getUsername().equals(user.getUsername())){
+        if (!resources.getUsername().equals(user.getUsername())) {
             redisUtils.del("user::username:" + user.getUsername());
         }
         // 如果用户被禁用，则清除用户登录信息
-        if(!resources.getEnabled()){
+        if (!resources.getEnabled()) {
             onlineUserService.kickOutForUsername(resources.getUsername());
         }
         user.setUsername(resources.getUsername());
@@ -117,13 +117,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void delete(Set<Long> ids) {
-        for (Long id : ids) {
-            // 清理缓存
-            UserDto user = findById(id);
-            delCaches(user.getId(), user.getUsername());
-        }
-        userRepository.deleteAllByIdIn(ids);
+    public void delete(Long id) {
+        // 清理缓存
+        UserDto user = findById(id);
+        delCaches(user.getId(), user.getUsername());
+        userRepository.deleteAllByIdIn(id);
     }
 
     @Override
@@ -157,13 +155,15 @@ public class UserServiceImpl implements UserService {
             FileUtil.del(oldPath);
         }
         redisUtils.del("user::username:" + user.getUsername());
-        return new HashMap<String,String>(1){{put("avatar",file.getName());}};
+        return new HashMap<String, String>(1) {{
+            put("avatar", file.getName());
+        }};
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void updateEmail(String username, String email) {
-        userRepository.updateEmail(username,email);
+        userRepository.updateEmail(username, email);
         redisUtils.del("user::username:" + username);
     }
 
