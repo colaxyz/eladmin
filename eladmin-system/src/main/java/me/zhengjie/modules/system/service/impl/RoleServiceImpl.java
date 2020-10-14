@@ -119,12 +119,9 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void delete(Set<Long> ids) {
-        for (Long id : ids) {
-            // 更新相关缓存
-            delCaches(id);
-        }
-        roleRepository.deleteAllByIdIn(ids);
+    public void delete(Long id) {
+        delCaches(id);
+        roleRepository.deleteAllByIdIn(id);
     }
 
     @Override
@@ -141,8 +138,8 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public void verification(Set<Long> ids) {
-        if (userRepository.countByRoles(ids) > 0) {
+    public void verification(Long id) {
+        if (userRepository.countByRoles(id) > 0) {
             throw new BadRequestException("所选角色存在用户关联，请解除关联再试！");
         }
     }

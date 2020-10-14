@@ -60,11 +60,11 @@ public class RoleController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @DeleteMapping
-    public ResponseEntity<Object> delete(@RequestBody Set<Long> ids){
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<Object> delete(@PathVariable Long id){
         // 验证是否被用户关联
-        roleService.verification(ids);
-        roleService.delete(ids);
+        roleService.verification(id);
+        roleService.delete(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

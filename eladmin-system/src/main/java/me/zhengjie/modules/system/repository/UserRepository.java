@@ -86,10 +86,10 @@ public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificat
 
     /**
      * 根据角色查询
-     * @param ids /
+     * @param id /
      * @return /
      */
     @Query(value = "SELECT count(1) FROM sys_user u, sys_users_roles r WHERE " +
-            "u.user_id = r.user_id AND r.role_id in ?1", nativeQuery = true)
-    int countByRoles(Set<Long> ids);
+            "u.user_id = r.user_id AND r.role_id = ?1", nativeQuery = true)
+    int countByRoles(Long id);
 }

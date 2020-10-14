@@ -40,9 +40,9 @@ public interface RoleService {
 
     /**
      * 删除
-     * @param ids /
+     * @param id /
      */
-    void delete(Set<Long> ids);
+    void delete(Long id);
 
     /**
      * 根据用户ID查询
@@ -88,9 +88,9 @@ public interface RoleService {
 
     /**
      * 验证是否被用户关联
-     * @param ids /
+     * @param id /
      */
-    void verification(Set<Long> ids);
+    void verification(Long id);
 
     /**
      * 根据菜单Id查询
