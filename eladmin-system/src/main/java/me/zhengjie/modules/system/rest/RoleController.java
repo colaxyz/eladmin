@@ -21,11 +21,6 @@ public class RoleController {
 
     private static final String ENTITY_NAME = "role";
 
-    @GetMapping(value = "/{id}")
-    public ResponseEntity<Object> query(@PathVariable Long id){
-        return new ResponseEntity<>(roleService.findById(id), HttpStatus.OK);
-    }
-
     @GetMapping(value = "/all")
     public ResponseEntity<Object> query(){
         return new ResponseEntity<>(roleService.queryAll(),HttpStatus.OK);
