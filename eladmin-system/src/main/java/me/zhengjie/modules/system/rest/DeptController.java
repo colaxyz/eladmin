@@ -26,44 +26,42 @@ public class DeptController {
     @GetMapping
     public ResponseEntity<Object> query(DeptQueryCriteria criteria) throws Exception {
         List<DeptDto> deptDtos = deptService.queryAll(criteria, true);
-        return new ResponseEntity<>(PageUtil.toPage(deptDtos, deptDtos.size()),HttpStatus.OK);
+        return new ResponseEntity<>(PageUtil.toPage(deptDtos, deptDtos.size()), HttpStatus.OK);
     }
 
     @PostMapping("/superior")
     public ResponseEntity<Object> getSuperior(@RequestBody List<Long> ids) {
-        Set<DeptDto> deptDtos  = new LinkedHashSet<>();
+        Set<DeptDto> deptDtos = new LinkedHashSet<>();
         for (Long id : ids) {
             DeptDto deptDto = deptService.findById(id);
             List<DeptDto> depts = deptService.getSuperior(deptDto, new ArrayList<>());
             deptDtos.addAll(depts);
         }
-        return new ResponseEntity<>(deptService.buildTree(new ArrayList<>(deptDtos)),HttpStatus.OK);
+        return new ResponseEntity<>(deptService.buildTree(new ArrayList<>(deptDtos)), HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<Object> create(@Validated @RequestBody Dept resources){
+    public ResponseEntity<Object> create(@Validated @RequestBody Dept resources) {
         if (resources.getId() != null) {
-            throw new BadRequestException("A new "+ ENTITY_NAME +" cannot already have an ID");
+            throw new BadRequestException("A new " + ENTITY_NAME + " cannot already have an ID");
         }
         deptService.create(resources);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @PutMapping
-    public ResponseEntity<Object> update(@Validated(Dept.Update.class) @RequestBody Dept resources){
+    public ResponseEntity<Object> update(@Validated(Dept.Update.class) @RequestBody Dept resources) {
         deptService.update(resources);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @DeleteMapping
-    public ResponseEntity<Object> delete(@RequestBody Set<Long> ids){
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<Object> delete(@PathVariable Long id) {
         Set<DeptDto> deptDtos = new HashSet<>();
-        for (Long id : ids) {
-            List<Dept> deptList = deptService.findByPid(id);
-            deptDtos.add(deptService.findById(id));
-            if(CollectionUtil.isNotEmpty(deptList)){
-                deptDtos = deptService.getDeleteDepts(deptList, deptDtos);
-            }
+        List<Dept> deptList = deptService.findByPid(id);
+        deptDtos.add(deptService.findById(id));
+        if (CollectionUtil.isNotEmpty(deptList)) {
+            deptDtos = deptService.getDeleteDepts(deptList, deptDtos);
         }
         // 验证是否被角色或用户关联
         deptService.verification(deptDtos);
