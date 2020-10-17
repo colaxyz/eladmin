@@ -1,14 +1,12 @@
 package me.zhengjie.modules.system.rest;
 
 import lombok.RequiredArgsConstructor;
-import me.zhengjie.config.RsaProperties;
 import me.zhengjie.exception.BadRequestException;
 import me.zhengjie.modules.system.domain.User;
 import me.zhengjie.modules.system.domain.vo.UserPassVo;
 import me.zhengjie.modules.system.service.UserService;
 import me.zhengjie.modules.system.service.dto.UserDto;
 import me.zhengjie.modules.system.service.dto.UserQueryCriteria;
-import me.zhengjie.utils.RsaUtils;
 import me.zhengjie.utils.SecurityUtils;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -61,9 +59,9 @@ public class UserController {
     }
 
     @PostMapping(value = "/updatePass")
-    public ResponseEntity<Object> updatePass(@RequestBody UserPassVo passVo) throws Exception {
-        String oldPass = RsaUtils.decryptByPrivateKey(RsaProperties.privateKey, passVo.getOldPass());
-        String newPass = RsaUtils.decryptByPrivateKey(RsaProperties.privateKey, passVo.getNewPass());
+    public ResponseEntity<Object> updatePass(@RequestBody UserPassVo passVo) {
+        String oldPass = passVo.getOldPass();
+        String newPass = passVo.getNewPass();
         UserDto user = userService.findByName(SecurityUtils.getCurrentUsername());
         if (!passwordEncoder.matches(oldPass, user.getPassword())) {
             throw new BadRequestException("修改失败，旧密码错误");
@@ -81,10 +79,9 @@ public class UserController {
     }
 
     @PostMapping(value = "/updateEmail")
-    public ResponseEntity<Object> updateEmail(@RequestBody User user) throws Exception {
-        String password = RsaUtils.decryptByPrivateKey(RsaProperties.privateKey, user.getPassword());
+    public ResponseEntity<Object> updateEmail(@RequestBody User user) {
         UserDto userDto = userService.findByName(SecurityUtils.getCurrentUsername());
-        if (!passwordEncoder.matches(password, userDto.getPassword())) {
+        if (!passwordEncoder.matches(user.getPassword(), userDto.getPassword())) {
             throw new BadRequestException("密码错误");
         }
         userService.updateEmail(userDto.getUsername(), user.getEmail());
