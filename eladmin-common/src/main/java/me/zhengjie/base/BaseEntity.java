@@ -31,17 +31,9 @@ public class BaseEntity implements Serializable {
     @Column(name = "create_by", updatable = false)
     private String createBy;
 
-    @LastModifiedBy
-    @Column(name = "update_by")
-    private String updatedBy;
-
     @CreationTimestamp
     @Column(name = "create_time", updatable = false)
     private Timestamp createTime;
-
-    @UpdateTimestamp
-    @Column(name = "update_time")
-    private Timestamp updateTime;
 
     /* 分组校验 */
     public @interface Create {}

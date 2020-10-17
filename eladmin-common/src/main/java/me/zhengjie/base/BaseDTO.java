@@ -13,11 +13,7 @@ public class BaseDTO  implements Serializable {
 
     private String createBy;
 
-    private String updatedBy;
-
     private Timestamp createTime;
-
-    private Timestamp updateTime;
 
     @Override
     public String toString() {
