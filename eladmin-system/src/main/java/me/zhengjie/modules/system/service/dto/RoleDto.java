@@ -15,8 +15,6 @@ public class RoleDto extends BaseDTO implements Serializable {
 
     private Set<MenuDto> menus;
 
-    private Set<DeptDto> depts;
-
     private String roleKey;
 
     private String name;

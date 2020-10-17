@@ -42,15 +42,6 @@ public interface RoleRepository extends JpaRepository<Role, Long>, JpaSpecificat
     void untiedMenu(Long id);
 
     /**
-     * 根据部门查询
-     * @param deptIds /
-     * @return /
-     */
-    @Query(value = "select count(1) from sys_role r, sys_roles_depts d where " +
-            "r.role_id = d.role_id and d.dept_id in ?1",nativeQuery = true)
-    int countByDepts(Set<Long> deptIds);
-
-    /**
      * 根据菜单Id查询
      * @param menuIds /
      * @return /

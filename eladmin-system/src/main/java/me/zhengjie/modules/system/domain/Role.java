@@ -34,12 +34,6 @@ public class Role extends BaseEntity implements Serializable {
             inverseJoinColumns = {@JoinColumn(name = "menu_id",referencedColumnName = "menu_id")})
     private Set<Menu> menus;
 
-    @ManyToMany
-    @JoinTable(name = "sys_roles_depts",
-            joinColumns = {@JoinColumn(name = "role_id",referencedColumnName = "role_id")},
-            inverseJoinColumns = {@JoinColumn(name = "dept_id",referencedColumnName = "dept_id")})
-    private Set<Dept> depts;
-
     @NotBlank
     private String roleKey;
 

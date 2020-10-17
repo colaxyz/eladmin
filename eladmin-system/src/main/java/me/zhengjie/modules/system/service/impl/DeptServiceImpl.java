@@ -5,9 +5,7 @@ import cn.hutool.core.util.ObjectUtil;
 import lombok.RequiredArgsConstructor;
 import me.zhengjie.exception.BadRequestException;
 import me.zhengjie.modules.system.domain.Dept;
-import me.zhengjie.modules.system.domain.User;
 import me.zhengjie.modules.system.repository.DeptRepository;
-import me.zhengjie.modules.system.repository.RoleRepository;
 import me.zhengjie.modules.system.repository.UserRepository;
 import me.zhengjie.modules.system.service.DeptService;
 import me.zhengjie.modules.system.service.dto.DeptDto;
@@ -35,7 +33,6 @@ public class DeptServiceImpl implements DeptService {
     private final DeptMapper deptMapper;
     private final UserRepository userRepository;
     private final RedisUtils redisUtils;
-    private final RoleRepository roleRepository;
 
     @Override
     public List<DeptDto> queryAll(DeptQueryCriteria criteria, Boolean isQuery) throws Exception {
@@ -72,11 +69,6 @@ public class DeptServiceImpl implements DeptService {
     @Cacheable(key = "'pid:' + #p0")
     public List<Dept> findByPid(long pid) {
         return deptRepository.findByPid(pid);
-    }
-
-    @Override
-    public Set<Dept> findByRoleId(Long id) {
-        return deptRepository.findByRoleId(id);
     }
 
     @Override
@@ -201,9 +193,6 @@ public class DeptServiceImpl implements DeptService {
         if(userRepository.countByDepts(deptIds) > 0){
             throw new BadRequestException("所选部门存在用户关联，请解除后再试！");
         }
-        if(roleRepository.countByDepts(deptIds) > 0){
-            throw new BadRequestException("所选部门存在角色关联，请解除后再试！");
-        }
     }
 
     private void updateSubCnt(Long deptId){
@@ -220,9 +209,6 @@ public class DeptServiceImpl implements DeptService {
      * @param newPid /
      */
     public void delCaches(Long id, Long oldPid, Long newPid){
-        List<User> users = userRepository.findByDeptRoleId(id);
-        // 删除数据权限
-        redisUtils.delByKeys("data::user:",users.stream().map(User::getId).collect(Collectors.toSet()));
         redisUtils.del("dept::id:" + id);
         redisUtils.del("dept::pid:" + (oldPid == null ? 0 : oldPid));
         redisUtils.del("dept::pid:" + (newPid == null ? 0 : newPid));

@@ -5,8 +5,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+
 import java.util.List;
-import java.util.Set;
 
 public interface DeptRepository extends JpaRepository<Dept, Long>, JpaSpecificationExecutor<Dept> {
 
@@ -22,15 +22,6 @@ public interface DeptRepository extends JpaRepository<Dept, Long>, JpaSpecificat
      * @return /
      */
     List<Dept> findByPidIsNull();
-
-    /**
-     * 根据角色ID 查询
-     * @param roleId 角色ID
-     * @return /
-     */
-    @Query(value = "select d.* from sys_dept d, sys_roles_depts r where " +
-            "d.dept_id = r.dept_id and r.role_id = ?1", nativeQuery = true)
-    Set<Dept> findByRoleId(Long roleId);
 
     /**
      * 判断是否存在子节点

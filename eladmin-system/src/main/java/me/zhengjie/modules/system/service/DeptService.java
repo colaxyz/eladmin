@@ -52,13 +52,6 @@ public interface DeptService {
     List<Dept> findByPid(long pid);
 
     /**
-     * 根据角色ID查询
-     * @param id /
-     * @return /
-     */
-    Set<Dept> findByRoleId(Long id);
-
-    /**
      * 获取待删除的部门
      * @param deptList /
      * @param deptDtos /

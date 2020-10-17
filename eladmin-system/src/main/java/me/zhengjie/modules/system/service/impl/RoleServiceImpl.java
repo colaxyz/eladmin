@@ -91,7 +91,6 @@ public class RoleServiceImpl implements RoleService {
         role.setRoleKey(resources.getRoleKey());
         role.setName(resources.getName());
         role.setDescription(resources.getDescription());
-        role.setDepts(resources.getDepts());
         roleRepository.save(role);
         // 更新相关缓存
         delCaches(role.getId());

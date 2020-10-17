@@ -53,15 +53,6 @@ public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificat
     List<User> findByRoleId(Long roleId);
 
     /**
-     * 根据角色中的部门查询
-     * @param id /
-     * @return /
-     */
-    @Query(value = "SELECT u.* FROM sys_user u, sys_users_roles r, sys_roles_depts d WHERE " +
-            "u.user_id = r.user_id AND r.role_id = d.role_id AND r.role_id = ?1 group by u.user_id", nativeQuery = true)
-    List<User> findByDeptRoleId(Long id);
-
-    /**
      * 根据菜单查询
      * @param id 菜单ID
      * @return /
