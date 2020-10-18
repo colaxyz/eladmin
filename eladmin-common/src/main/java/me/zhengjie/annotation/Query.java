@@ -24,20 +24,11 @@ public @interface Query {
      */
     Join join() default Join.LEFT;
 
-    /**
-     * 多字段模糊搜索，仅支持String类型字段，多个用逗号隔开, 如@Query(blurry = "email,username")
-     */
-    String blurry() default "";
-
     enum Type {
         // jie 2019/6/4 相等
         EQUAL
         // Dong ZhaoYang 2017/8/7 中模糊查询
         , INNER_LIKE
-        // Dong ZhaoYang 2017/8/7 左模糊查询
-        , LEFT_LIKE
-        // Dong ZhaoYang 2017/8/7 右模糊查询
-        , RIGHT_LIKE
         // 为空
         ,IS_NULL
     }

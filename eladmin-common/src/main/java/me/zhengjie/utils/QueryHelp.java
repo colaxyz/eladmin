@@ -29,7 +29,6 @@ public class QueryHelp {
                 if (q != null) {
                     String propName = q.propName();
                     String joinName = q.joinName();
-                    String blurry = q.blurry();
                     String attributeName = isBlank(propName) ? field.getName() : propName;
                     Class<?> fieldType = field.getType();
                     Object val = field.get(query);
@@ -37,18 +36,6 @@ public class QueryHelp {
                         continue;
                     }
                     Join join = null;
-                    // 模糊多字段
-                    if (ObjectUtil.isNotEmpty(blurry)) {
-                        String[] blurrys = blurry.split(",");
-                        List<Predicate> orPredicate = new ArrayList<>();
-                        for (String s : blurrys) {
-                            orPredicate.add(cb.like(root.get(s)
-                                    .as(String.class), "%" + val.toString() + "%"));
-                        }
-                        Predicate[] p = new Predicate[orPredicate.size()];
-                        list.add(cb.or(orPredicate.toArray(p)));
-                        continue;
-                    }
                     if (ObjectUtil.isNotEmpty(joinName)) {
                         String[] joinNames = joinName.split(">");
                         for (String name : joinNames) {
@@ -79,14 +66,6 @@ public class QueryHelp {
                         case INNER_LIKE:
                             list.add(cb.like(getExpression(attributeName,join,root)
                                     .as(String.class), "%" + val.toString() + "%"));
-                            break;
-                        case LEFT_LIKE:
-                            list.add(cb.like(getExpression(attributeName,join,root)
-                                    .as(String.class), "%" + val.toString()));
-                            break;
-                        case RIGHT_LIKE:
-                            list.add(cb.like(getExpression(attributeName,join,root)
-                                    .as(String.class), val.toString() + "%"));
                             break;
                         case IS_NULL:
                             list.add(cb.isNull(getExpression(attributeName,join,root)));

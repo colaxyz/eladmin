@@ -6,7 +6,7 @@ import me.zhengjie.annotation.Query;
 @Data
 public class RoleQueryCriteria {
 
-    @Query(blurry = "name")
-    private String blurry;
+    @Query(type = Query.Type.INNER_LIKE)
+    private String name;
 
 }

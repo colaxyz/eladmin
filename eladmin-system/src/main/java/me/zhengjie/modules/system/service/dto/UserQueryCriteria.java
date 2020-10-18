@@ -11,7 +11,7 @@ public class UserQueryCriteria implements Serializable {
     @Query
     private Long id;
 
-    @Query(blurry = "username,nickName")
-    private String blurry;
+    @Query(type = Query.Type.INNER_LIKE)
+    private String username;
 
 }
