@@ -6,9 +6,6 @@ import me.zhengjie.annotation.Query;
 @Data
 public class MenuQueryCriteria {
 
-    @Query(type = Query.Type.INNER_LIKE)
-    private String title;
-
     @Query(type = Query.Type.IS_NULL, propName = "pid")
     private Boolean pidIsNull;
 
