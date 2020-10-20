@@ -6,9 +6,6 @@ import me.zhengjie.annotation.Query;
 @Data
 public class DeptQueryCriteria{
 
-    @Query(type = Query.Type.INNER_LIKE)
-    private String name;
-
     @Query
     private Boolean enabled;
 

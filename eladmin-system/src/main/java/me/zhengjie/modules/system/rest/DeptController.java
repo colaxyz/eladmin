@@ -20,7 +20,6 @@ import java.util.*;
 public class DeptController {
 
     private final DeptService deptService;
-    private static final String ENTITY_NAME = "dept";
 
     @GetMapping
     public ResponseEntity<Object> query(DeptQueryCriteria criteria) throws Exception {
