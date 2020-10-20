@@ -2,7 +2,6 @@ package me.zhengjie.modules.system.rest;
 
 import cn.hutool.core.collection.CollectionUtil;
 import lombok.RequiredArgsConstructor;
-import me.zhengjie.exception.BadRequestException;
 import me.zhengjie.modules.system.domain.Dept;
 import me.zhengjie.modules.system.service.DeptService;
 import me.zhengjie.modules.system.service.dto.DeptDto;
@@ -42,9 +41,6 @@ public class DeptController {
 
     @PostMapping
     public ResponseEntity<Object> create(@Validated @RequestBody Dept resources) {
-        if (resources.getId() != null) {
-            throw new BadRequestException("A new " + ENTITY_NAME + " cannot already have an ID");
-        }
         deptService.create(resources);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
