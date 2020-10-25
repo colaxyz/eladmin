@@ -24,7 +24,7 @@ public class DeptController {
     @GetMapping
     public ResponseEntity<Object> query(DeptQueryCriteria criteria) throws Exception {
         List<DeptDto> deptDtos = deptService.queryAll(criteria, true);
-        return new ResponseEntity<>(PageUtil.toPage(deptDtos, deptDtos.size()), HttpStatus.OK);
+        return new ResponseEntity<>(PageUtil.toPage(deptDtos), HttpStatus.OK);
     }
 
     @PostMapping("/superior")

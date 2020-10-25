@@ -41,7 +41,7 @@ public class MenuController {
     @GetMapping
     public ResponseEntity<Object> query(MenuQueryCriteria criteria) throws Exception {
         List<MenuDto> menuDtoList = menuService.queryAll(criteria, true);
-        return new ResponseEntity<>(PageUtil.toPage(menuDtoList, menuDtoList.size()), HttpStatus.OK);
+        return new ResponseEntity<>(PageUtil.toPage(menuDtoList), HttpStatus.OK);
     }
 
     @PostMapping("/superior")
