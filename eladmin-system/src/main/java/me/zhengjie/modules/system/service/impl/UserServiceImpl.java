@@ -1,7 +1,6 @@
 package me.zhengjie.modules.system.service.impl;
 
 import lombok.RequiredArgsConstructor;
-import me.zhengjie.config.FileProperties;
 import me.zhengjie.exception.EntityExistException;
 import me.zhengjie.exception.EntityNotFoundException;
 import me.zhengjie.modules.security.service.OnlineUserService;
@@ -12,6 +11,7 @@ import me.zhengjie.modules.system.service.dto.UserDto;
 import me.zhengjie.modules.system.service.dto.UserQueryCriteria;
 import me.zhengjie.modules.system.service.mapstruct.UserMapper;
 import me.zhengjie.utils.*;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
@@ -21,16 +21,20 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
 @CacheConfig(cacheNames = "user")
 public class UserServiceImpl implements UserService {
 
+    @Value("${file.avatar}")
+    private String avatar;
+
     private final UserRepository userRepository;
     private final UserMapper userMapper;
-    private final FileProperties properties;
     private final RedisUtils redisUtils;
     private final OnlineUserService onlineUserService;
 
@@ -147,7 +151,7 @@ public class UserServiceImpl implements UserService {
     public Map<String, String> updateAvatar(MultipartFile multipartFile) {
         User user = userRepository.findByUsername(SecurityUtils.getCurrentUsername());
         String oldPath = user.getAvatarPath();
-        File file = FileUtil.upload(multipartFile, properties.getPath().getAvatar());
+        File file = FileUtil.upload(multipartFile, avatar);
         user.setAvatarPath(Objects.requireNonNull(file).getPath());
         user.setAvatarName(file.getName());
         userRepository.save(user);
