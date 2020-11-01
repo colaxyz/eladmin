@@ -33,11 +33,6 @@ public class SecurityProperties {
      */
     private String onlineKey;
 
-    /**
-     * 验证码 key
-     */
-    private String codeKey;
-
     public String getTokenStartWith() {
         return tokenStartWith + " ";
     }
