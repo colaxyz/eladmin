@@ -1,7 +1,6 @@
 package me.zhengjie.modules.security.rest;
 
 import lombok.RequiredArgsConstructor;
-import me.zhengjie.annotation.AnonymousAccess;
 import lombok.extern.slf4j.Slf4j;
 import me.zhengjie.modules.security.config.bean.SecurityProperties;
 import me.zhengjie.modules.security.security.TokenProvider;
@@ -35,7 +34,6 @@ public class AuthorizationController {
     private final TokenProvider tokenProvider;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
 
-    @AnonymousAccess
     @PostMapping(value = "/login")
     public ResponseEntity<Object> login(@Validated @RequestBody AuthUserDto authUser) {
         UsernamePasswordAuthenticationToken authenticationToken =
@@ -60,7 +58,6 @@ public class AuthorizationController {
         return ResponseEntity.ok(SecurityUtils.getCurrentUser());
     }
 
-    @AnonymousAccess
     @DeleteMapping(value = "/logout")
     public ResponseEntity<Object> logout(HttpServletRequest request) {
         onlineUserService.logout(tokenProvider.getToken(request));
