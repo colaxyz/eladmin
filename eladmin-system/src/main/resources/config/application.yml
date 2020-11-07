@@ -41,8 +41,6 @@ jwt:
   token-validity-in-seconds: 21600000
   # 在线用户key
   online-key: online-token-
-  # 验证码
-  code-key: code-key-
 
 # 文件存储路径
 file:
