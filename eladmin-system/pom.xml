@@ -14,13 +14,15 @@
 
     <properties>
         <jjwt.version>0.11.1</jjwt.version>
+        <hutool.version>5.3.4</hutool.version>
     </properties>
 
     <dependencies>
+        <!--工具包-->
         <dependency>
-            <groupId>me.zhengjie</groupId>
-            <artifactId>eladmin-common</artifactId>
-            <version>2.5</version>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
+            <version>${hutool.version}</version>
         </dependency>
 
         <!-- jwt -->

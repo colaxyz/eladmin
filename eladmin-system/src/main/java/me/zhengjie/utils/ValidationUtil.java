@@ -5,8 +5,6 @@ import me.zhengjie.exception.BadRequestException;
 
 /**
  * 验证工具
- * @author Zheng Jie
- * @date 2018-11-23
  */
 public class ValidationUtil{
 

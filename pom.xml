@@ -15,7 +15,6 @@
     <name>V-ADMIN后台管理</name>
 
     <modules>
-        <module>eladmin-common</module>
         <module>eladmin-system</module>
     </modules>
 
