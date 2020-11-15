@@ -12,10 +12,8 @@ import me.zhengjie.modules.system.service.dto.DeptDto;
 import me.zhengjie.modules.system.service.dto.DeptQueryCriteria;
 import me.zhengjie.modules.system.service.mapstruct.DeptMapper;
 import me.zhengjie.utils.QueryHelp;
-import me.zhengjie.utils.RedisUtils;
 import me.zhengjie.utils.ValidationUtil;
 import org.springframework.cache.annotation.CacheConfig;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,7 +30,6 @@ public class DeptServiceImpl implements DeptService {
     private final DeptRepository deptRepository;
     private final DeptMapper deptMapper;
     private final UserRepository userRepository;
-    private final RedisUtils redisUtils;
 
     @Override
     public List<DeptDto> queryAll(DeptQueryCriteria criteria, Boolean isQuery) throws Exception {
@@ -58,7 +55,6 @@ public class DeptServiceImpl implements DeptService {
     }
 
     @Override
-    @Cacheable(key = "'id:' + #p0")
     public DeptDto findById(Long id) {
         Dept dept = deptRepository.findById(id).orElseGet(Dept::new);
         ValidationUtil.isNull(dept.getId(),"Dept","id",id);
@@ -95,16 +91,12 @@ public class DeptServiceImpl implements DeptService {
         // 更新父节点中子节点数目
         updateSubCnt(oldPid);
         updateSubCnt(newPid);
-        // 清理缓存
-        delCaches(resources.getId());
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void delete(Set<DeptDto> deptDtos) {
         for (DeptDto deptDto : deptDtos) {
-            // 清理缓存
-            delCaches(deptDto.getId());
             deptRepository.deleteById(deptDto.getId());
             updateSubCnt(deptDto.getPid());
         }
@@ -199,11 +191,4 @@ public class DeptServiceImpl implements DeptService {
         }
     }
 
-    /**
-     * 清理缓存
-     * @param id /
-     */
-    public void delCaches(Long id){
-        redisUtils.del("dept::id:" + id);
-    }
 }
