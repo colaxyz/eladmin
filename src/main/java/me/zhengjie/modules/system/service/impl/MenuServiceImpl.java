@@ -6,12 +6,9 @@ import lombok.RequiredArgsConstructor;
 import me.zhengjie.exception.BadRequestException;
 import me.zhengjie.exception.EntityExistException;
 import me.zhengjie.modules.system.domain.Menu;
-import me.zhengjie.modules.system.domain.Role;
-import me.zhengjie.modules.system.domain.User;
 import me.zhengjie.modules.system.domain.vo.MenuMetaVo;
 import me.zhengjie.modules.system.domain.vo.MenuVo;
 import me.zhengjie.modules.system.repository.MenuRepository;
-import me.zhengjie.modules.system.repository.UserRepository;
 import me.zhengjie.modules.system.service.MenuService;
 import me.zhengjie.modules.system.service.RoleService;
 import me.zhengjie.modules.system.service.dto.MenuDto;
@@ -19,11 +16,9 @@ import me.zhengjie.modules.system.service.dto.MenuQueryCriteria;
 import me.zhengjie.modules.system.service.dto.RoleSmallDto;
 import me.zhengjie.modules.system.service.mapstruct.MenuMapper;
 import me.zhengjie.utils.QueryHelp;
-import me.zhengjie.utils.RedisUtils;
 import me.zhengjie.utils.StringUtils;
 import me.zhengjie.utils.ValidationUtil;
 import org.springframework.cache.annotation.CacheConfig;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,10 +33,8 @@ import java.util.stream.Collectors;
 public class MenuServiceImpl implements MenuService {
 
     private final MenuRepository menuRepository;
-    private final UserRepository userRepository;
     private final MenuMapper menuMapper;
     private final RoleService roleService;
-    private final RedisUtils redisUtils;
 
     @Override
     public List<MenuDto> queryAll(MenuQueryCriteria criteria, Boolean isQuery) throws Exception {
@@ -66,20 +59,13 @@ public class MenuServiceImpl implements MenuService {
     }
 
     @Override
-    @Cacheable(key = "'id:' + #p0")
     public MenuDto findById(long id) {
         Menu menu = menuRepository.findById(id).orElseGet(Menu::new);
         ValidationUtil.isNull(menu.getId(),"Menu","id",id);
         return menuMapper.toDto(menu);
     }
 
-    /**
-     * 用户角色改变时需清理缓存
-     * @param currentUserId /
-     * @return /
-     */
     @Override
-    @Cacheable(key = "'user:' + #p0")
     public List<MenuDto> findByUser(Long currentUserId) {
         List<RoleSmallDto> roles = roleService.findByUsersId(currentUserId);
         Set<Long> roleIds = roles.stream().map(RoleSmallDto::getId).collect(Collectors.toSet());
@@ -164,8 +150,6 @@ public class MenuServiceImpl implements MenuService {
         // 计算父级菜单节点数目
         updateSubCnt(oldPid);
         updateSubCnt(newPid);
-        // 清理缓存
-        delCaches(resources.getId());
     }
 
     @Override
@@ -185,8 +169,6 @@ public class MenuServiceImpl implements MenuService {
     @Transactional(rollbackFor = Exception.class)
     public void delete(Set<Menu> menuSet) {
         for (Menu menu : menuSet) {
-            // 清理缓存
-            delCaches(menu.getId());
             roleService.untiedMenu(menu.getId());
             menuRepository.deleteById(menu.getId());
             updateSubCnt(menu.getPid());
@@ -302,18 +284,4 @@ public class MenuServiceImpl implements MenuService {
         }
     }
 
-    /**
-     * 清理缓存
-     * @param id 菜单ID
-     */
-    public void delCaches(Long id){
-        List<User> users = userRepository.findByMenuId(id);
-        redisUtils.del("menu::id:" +id);
-        redisUtils.delByKeys("menu::user:",users.stream().map(User::getId).collect(Collectors.toSet()));
-        // 清除 Role 缓存
-        List<Role> roles = roleService.findInMenuId(new ArrayList<Long>(){{
-            add(id);
-        }});
-        redisUtils.delByKeys("role::id:",roles.stream().map(Role::getId).collect(Collectors.toSet()));
-    }
 }
