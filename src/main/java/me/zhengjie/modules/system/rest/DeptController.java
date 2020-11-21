@@ -45,7 +45,7 @@ public class DeptController {
     }
 
     @PutMapping
-    public ResponseEntity<Object> update(@Validated(Dept.Update.class) @RequestBody Dept resources) {
+    public ResponseEntity<Object> update(@RequestBody Dept resources) {
         deptService.update(resources);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

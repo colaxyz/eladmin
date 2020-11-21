@@ -38,13 +38,13 @@ public class UserController {
     }
 
     @PutMapping
-    public ResponseEntity<Object> update(@Validated(User.Update.class) @RequestBody User resources) {
+    public ResponseEntity<Object> update(@RequestBody User resources) {
         userService.update(resources);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @PutMapping(value = "center")
-    public ResponseEntity<Object> center(@Validated(User.Update.class) @RequestBody User resources) {
+    public ResponseEntity<Object> center(@RequestBody User resources) {
         if (!resources.getId().equals(SecurityUtils.getCurrentUserId())) {
             throw new BadRequestException("不能修改他人资料");
         }

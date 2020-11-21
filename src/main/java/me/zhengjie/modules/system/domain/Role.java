@@ -20,7 +20,6 @@ public class Role extends BaseEntity implements Serializable {
 
     @Id
     @Column(name = "role_id")
-    @NotNull(groups = {Update.class})
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 

@@ -41,7 +41,7 @@ public class RoleController {
     }
 
     @PutMapping
-    public ResponseEntity<Object> update(@Validated(Role.Update.class) @RequestBody Role resources){
+    public ResponseEntity<Object> update(@RequestBody Role resources){
         roleService.update(resources);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

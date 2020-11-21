@@ -19,7 +19,6 @@ public class Menu extends BaseEntity implements Serializable {
 
     @Id
     @Column(name = "menu_id")
-    @NotNull(groups = {Update.class})
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 

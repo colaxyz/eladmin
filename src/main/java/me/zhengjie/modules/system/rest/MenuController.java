@@ -67,7 +67,7 @@ public class MenuController {
     }
 
     @PutMapping
-    public ResponseEntity<Object> update(@Validated(Menu.Update.class) @RequestBody Menu resources) {
+    public ResponseEntity<Object> update(@RequestBody Menu resources) {
         menuService.update(resources);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

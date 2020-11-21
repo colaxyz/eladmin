@@ -20,7 +20,6 @@ public class User extends BaseEntity implements Serializable {
 
     @Id
     @Column(name = "user_id")
-    @NotNull(groups = Update.class)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 

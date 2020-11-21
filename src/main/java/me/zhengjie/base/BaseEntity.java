@@ -28,8 +28,6 @@ public class BaseEntity implements Serializable {
     @Column(name = "create_time", updatable = false)
     private Timestamp createTime;
 
-    public @interface Update {}
-
     @Override
     public String toString() {
         ToStringBuilder builder = new ToStringBuilder(this);
