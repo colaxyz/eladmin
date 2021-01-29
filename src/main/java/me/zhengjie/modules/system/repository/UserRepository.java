@@ -68,14 +68,6 @@ public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificat
     void deleteAllByIdIn(Long id);
 
     /**
-     * 根据部门查询
-     * @param deptIds /
-     * @return /
-     */
-    @Query(value = "SELECT count(1) FROM sys_user u WHERE u.dept_id IN ?1", nativeQuery = true)
-    int countByDepts(Set<Long> deptIds);
-
-    /**
      * 根据角色查询
      * @param id /
      * @return /

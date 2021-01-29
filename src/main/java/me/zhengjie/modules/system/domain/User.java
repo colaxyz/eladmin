@@ -29,10 +29,6 @@ public class User extends BaseEntity implements Serializable {
             inverseJoinColumns = {@JoinColumn(name = "role_id",referencedColumnName = "role_id")})
     private Set<Role> roles;
 
-    @OneToOne
-    @JoinColumn(name = "dept_id")
-    private Dept dept;
-
     @NotBlank
     @Column(unique = true)
     private String username;
